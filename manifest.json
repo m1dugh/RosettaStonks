@@ -4,22 +4,18 @@
 	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "background.js"
+		"service_worker": "workers/background.js"
 	},
 	"action": {
 		"default_popup": "index.html"
 	},
 	"permissions": [
 		"storage",
-		"activeTab",
-		"webNavigation",
-		"management",
-		"scripting",
-		"tabs",
 		"webRequest"
+
 	],
-	"host_permissions":[
-		"<all_urls>"
+	"host_permissions": [
+		"*://*.rosettastone.com/"
 	]
 }
 
