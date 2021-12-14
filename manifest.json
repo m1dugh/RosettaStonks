@@ -1,0 +1,19 @@
+{
+	"name": "RosettaStonks",
+	"description": "ah ouit oui oui",
+	"version": "1.0.0",
+	"manifest_version": 3,
+	"background": {
+		"service_worker": "background.js"
+	},
+	"action": {
+		"default_popup": "index.html"
+	},
+	"permissions": [
+		"storage",
+		"activeTab",
+		"scripting"
+	]
+}
+
+
