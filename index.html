@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <link rel="stylesheet" href="app.css">
-  </head>
-  <body>
+</head>
+<body>
+<div id="statusPanel">
     <div id="status">not ready</div>
-    <button id="sendRequest">click to add time</button>
-	<script type="text/javascript" src="app/index.js"></script>
-  </body>
+    <div id="timeCounter">-1</div>
+</div>
+<form>
+    <input type="number" name="time" value="1" disabled/>
+    <button type="submit" disabled>add time</button>
+</form>
+<script type="text/javascript" src="app/index.js"></script>
+</body>
 </html>

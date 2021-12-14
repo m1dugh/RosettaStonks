@@ -2,6 +2,7 @@ const filterObject = {
     urls: ["https://tracking.rosettastone.com/*"]
 }
 
+
 chrome.webRequest.onBeforeRequest.addListener((details) => {
         if (!(details.type === "xmlhttprequest") || !(details.method === "POST"))
             return;
@@ -14,6 +15,7 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
             request:
                 {
                     id: details.requestId,
+                    url: details.url,
                     headers: details.requestHeaders,
                     body: bodyString,
                     ready: false
@@ -33,10 +35,14 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
         if (!details.requestId === id)
             return;
 
-        request.headers = details.requestHeaders
+        const headers = {};
+        for(let {name, value} of details.requestHeaders)
+            headers[name]=value
+        request.headers = headers
         request.ready = true
+        request.timestamp = Date.now()
         await chrome.storage.sync.set({request})
 
     });
 
-}, filterObject, ["requestHeaders"])
+}, filterObject, ["requestHeaders", "extraHeaders"])

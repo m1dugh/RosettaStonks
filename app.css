@@ -7,6 +7,10 @@ div#status::before {
   content: "status: ";
 }
 
+div#timeCounter::before {
+  content: "request age: "
+}
+
 button {
   height: 30px;
   width: 30px;
