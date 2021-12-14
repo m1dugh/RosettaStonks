@@ -4,22 +4,29 @@ const filterObject = {
 
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
-        if (!(details.type === "xmlhttprequest") || !(details.method === "POST"))
-            return;
 
-        const bodyString = new TextDecoder().decode(details.requestBody?.raw[0]?.bytes)
-        if (!bodyString.includes("delta_time"))
-            return;
+        chrome.storage.sync.get(["ready"], ({ready}) => {
+            if (ready)
+                return;
 
-        chrome.storage.sync.set({
-            request:
-                {
-                    id: details.requestId,
-                    url: details.url,
-                    headers: details.requestHeaders,
-                    body: bodyString,
-                    ready: false
-                }
+
+            if (!(details.type === "xmlhttprequest") || !(details.method === "POST"))
+                return;
+
+            const bodyString = new TextDecoder().decode(details.requestBody?.raw[0]?.bytes)
+            if (!bodyString.includes("delta_time"))
+                return;
+
+            chrome.storage.sync.set({
+                request:
+                    {
+                        url: details.url,
+                        headers: details.requestHeaders,
+                        body: bodyString,
+                    },
+                ready: false,
+                id: details.requestId
+            })
         })
 
     },
@@ -27,21 +34,18 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
     ["requestBody", "extraHeaders"])
 
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
-    chrome.storage.sync.get(["request"], async ({request}) => {
-        if (!request)
-            return;
+    chrome.storage.sync.get(["request", "id", "ready"], ({request, ready, id}) => {
+        if (!ready && details.requestId === id) {
+            console.log("self intercept:", ready)
 
-        const id = request.id;
-        if (!details.requestId === id)
-            return;
+            const headers = {};
+            for (let {name, value} of details.requestHeaders)
+                headers[name] = value
+            request.headers = headers
+            request.timestamp = Date.now()
 
-        const headers = {};
-        for(let {name, value} of details.requestHeaders)
-            headers[name]=value
-        request.headers = headers
-        request.ready = true
-        request.timestamp = Date.now()
-        await chrome.storage.sync.set({request})
+        }
+
 
     });
 

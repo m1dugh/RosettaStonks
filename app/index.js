@@ -5,7 +5,7 @@ const [form] = document.getElementsByTagName("form");
 const timeInput = form.firstElementChild;
 
 
-let ready = false;
+let appReady = false;
 
 function print_data(data) {
     chrome.tabs.query({
@@ -39,7 +39,7 @@ window.onload = async () => {
 
     form.onsubmit = (e) => {
         e.preventDefault()
-        if (!ready)
+        if (!appReady)
             return
 
         const minutes = parseInt(timeInput.value);
@@ -75,16 +75,18 @@ function SendRequest(minutes = 20) {
         }).then((res) => print_data(res.status))
             .catch((err) => print_data(err.stack))
 
+        print_data({url: request.url, data, headers: request.headers})
+
     })
 }
 
 
 function UpdateStatusPanel() {
-    chrome.storage.sync.get(["request"], ({request}) => {
-        status.innerText = request.ready ? "ready" : "not ready";
-        ready = request.ready;
+    chrome.storage.sync.get(["request", "ready"], ({request, ready}) => {
+        status.innerText = ready ? "ready" : "not ready";
+        appReady = ready;
         form.childNodes.forEach((el) => {
-            el.disabled = !request.ready;
+            el.disabled = !ready;
         })
         if (request.timestamp) {
             const format = new Intl.NumberFormat("en-US", {
