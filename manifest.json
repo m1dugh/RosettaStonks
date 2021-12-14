@@ -1,6 +1,6 @@
 {
 	"name": "RosettaStonks",
-	"description": "ah ouit oui oui",
+	"description": "ah oui oui oui",
 	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
@@ -12,7 +12,14 @@
 	"permissions": [
 		"storage",
 		"activeTab",
-		"scripting"
+		"webNavigation",
+		"management",
+		"scripting",
+		"tabs",
+		"webRequest"
+	],
+	"host_permissions":[
+		"<all_urls>"
 	]
 }
 
