@@ -1,3 +1,33 @@
+const icons = {
+    enabled: "images/icon.png",
+    disabled: "images/disabled-icon.png"
+}
+
+// forces the request to be dropped if older than 5h
+const maxRequestAge = 5 * 60 * 60 * 1000;
+
+chrome.tabs.onActivated.addListener(async ({tabId}) => {
+
+    chrome.tabs.get(tabId, (tab) => {
+        if (!tab)
+            return;
+        const urlValid = tab.url.includes("rosettastone.com");
+        chrome.action.setIcon({
+            path: {
+                128: urlValid ? icons.enabled : icons.disabled
+            }
+        }, () => null)
+        chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
+    })
+
+    chrome.storage.sync.get(["ready", "timestamp"], ({ready, timestamp}) => {
+        if (ready && Date.now() - timestamp > maxRequestAge)
+            chrome.storage.sync.set({ready: false})
+    });
+
+});
+
+
 const filterObject = {
     urls: ["https://tracking.rosettastone.com/*"]
 }
@@ -40,9 +70,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
             for (let {name, value} of details.requestHeaders)
                 headers[name] = value
             request.headers = headers
-            request.timestamp = Date.now()
 
-            chrome.storage.sync.set({request, ready: true})
+            chrome.storage.sync.set({request, ready: true, timestamp: Date.now()})
 
         }
 

@@ -3,7 +3,7 @@ body {
   width: 200px;
   padding: 10px;
   background-color: #202020;
-  color: cadetblue;
+  color: cornflowerblue;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -64,7 +64,7 @@ form input#timeInput[type=number] {
   -moz-appearance: textfield;
 }
 
-form button {
+button {
   all: unset;
   text-transform: uppercase;
   text-align: center;
@@ -82,6 +82,45 @@ button:hover {
 
 button:active {
   background-color: #323232;
+}
+
+button#clearRequest {
+  background-color: #a30000;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 12px;
+}
+
+button#clearRequest:hover {
+  background-color: darkred;
+  cursor: help;
+}
+
+button#clearRequest:active {
+  background-color: #a30000;
+}
+
+*:disabled {
+  opacity: 0.5;
+}
+
+form button[type=submit]:disabled {
+  background-color: #323232;
+}
+
+button#clearRequest:disabled {
+  background-color: #a30000;
+}
+
+button#clearRequest > img {
+  height: 100%;
+  width: 100%;
+}
+
+p#info {
+  display: none;
 }
 
 
