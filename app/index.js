@@ -88,7 +88,7 @@ function UpdateStatusPanel() {
         form.childNodes.forEach((el) => {
             el.disabled = !ready;
         })
-        if (request.timestamp) {
+        if (ready) {
             const format = new Intl.NumberFormat("en-US", {
                 minimumIntegerDigits: 2,
                 maximumFractionDigits: 0

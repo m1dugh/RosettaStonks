@@ -5,10 +5,9 @@ const filterObject = {
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
 
-        chrome.storage.sync.get(["ready"], ({ready}) => {
+        chrome.storage.sync.get(["ready", "request"], ({ready, request}) => {
             if (ready)
                 return;
-
 
             if (!(details.type === "xmlhttprequest") || !(details.method === "POST"))
                 return;
@@ -36,13 +35,14 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
     chrome.storage.sync.get(["request", "id", "ready"], ({request, ready, id}) => {
         if (!ready && details.requestId === id) {
-            console.log("self intercept:", ready)
 
             const headers = {};
             for (let {name, value} of details.requestHeaders)
                 headers[name] = value
             request.headers = headers
             request.timestamp = Date.now()
+
+            chrome.storage.sync.set({request, ready: true})
 
         }
 
