@@ -18,6 +18,9 @@
 		"scripting"
 
 	],
+	"icons": {
+		"128": "/images/icon.png"
+	},
 	"host_permissions": [
 		"*://*.rosettastone.com/"
 	]
