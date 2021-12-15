@@ -4,12 +4,18 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
+<h2>
+    Rosetta stonks
+</h2>
 <div id="statusPanel">
     <div id="status">not ready</div>
     <div id="timeCounter">-1</div>
 </div>
+<span class="bar"></span>
 <form>
-    <input type="number" name="time" value="1" disabled/>
+    <label for="timeInput">time to add:</label>
+    <input type="number" id="timeInput" name="time" value="1" disabled/>
+
     <button type="submit" disabled>add time</button>
 </form>
 <script type="text/javascript" src="app/index.js"></script>

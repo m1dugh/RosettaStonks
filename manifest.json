@@ -1,13 +1,14 @@
 {
 	"name": "RosettaStonks",
 	"description": "ah oui oui oui",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "workers/background.js"
 	},
 	"action": {
-		"default_popup": "index.html"
+		"default_popup": "index.html",
+		"default_icon": "/images/icon.png"
 	},
 	"permissions": [
 		"storage",

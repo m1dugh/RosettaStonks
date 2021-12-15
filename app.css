@@ -1,26 +1,87 @@
 body {
   height: 200px;
   width: 200px;
+  padding: 10px;
+  background-color: #202020;
+  color: cadetblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 12px;
 }
 
 div#status::before {
-  content: "status: ";
+  content: "status:\a";
+  white-space: pre;
 }
 
 div#timeCounter::before {
-  content: "request age: "
+  content: "request age:\a";
+  white-space: pre;
 }
 
-button {
-  height: 30px;
-  width: 30px;
-  outline: none;
-  margin: 10px;
-  border: none;
-  border-radius: 2px;
+div#statusPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-button.current {
-  box-shadow: 0 0 0 2px white,
-              0 0 0 4px black;
+.bar {
+  width: 90vw;
+  height: 1px;
+  background-color: #888;
+  align-self: center;
+  margin: 5px 0;
 }
+
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 50%;
+}
+
+form input#timeInput {
+  all: unset;
+  background-color: #323232;
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+
+form input::-webkit-outer-spin-button,
+form input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+form input#timeInput[type=number] {
+  -moz-appearance: textfield;
+}
+
+form button {
+  all: unset;
+  text-transform: uppercase;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  border-radius: 5px;
+  background-color: #323232;
+  padding: 5px 0px;
+}
+
+button:hover {
+  background-color: #2A2A2A;
+}
+
+button:active {
+  background-color: #323232;
+}
+
+
