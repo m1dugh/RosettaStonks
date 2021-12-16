@@ -1,126 +1,127 @@
 body {
-  height: 200px;
-  width: 200px;
-  padding: 10px;
-  background-color: #202020;
-  color: cornflowerblue;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  font-size: 12px;
+    height: 220px;
+    width: 200px;
+    padding: 10px;
+    background-color: #202020;
+    color: cornflowerblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 12px;
 }
 
 div#status::before {
-  content: "status:\a";
-  white-space: pre;
+    content: "status:\a";
+    white-space: pre;
 }
 
 div#timeCounter::before {
-  content: "request age:\a";
-  white-space: pre;
+    content: "request age:\a";
+    white-space: pre;
 }
 
 div#statusPanel {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .bar {
-  width: 90vw;
-  height: 1px;
-  background-color: #888;
-  align-self: center;
-  margin: 5px 0;
+    width: 90vw;
+    height: 1px;
+    background-color: #888;
+    align-self: center;
+    margin: 5px 0;
 }
 
 h2 {
-  text-align: center;
-  text-transform: uppercase;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    height: 50%;
+    margin-bottom: 30px;
 }
 
 form input#timeInput {
-  all: unset;
-  background-color: #323232;
-  padding: 5px;
-  margin-top: 5px;
-  border-radius: 5px;
+    all: unset;
+    background-color: #323232;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
 }
 
 form input::-webkit-outer-spin-button,
 form input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 form input#timeInput[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 button {
-  all: unset;
-  text-transform: uppercase;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin-top: auto;
-  border-radius: 5px;
-  background-color: #323232;
-  padding: 5px 0px;
+    all: unset;
+    text-transform: uppercase;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    border-radius: 5px;
+    background-color: #323232;
+    padding: 5px 0px;
 }
 
 button:hover {
-  background-color: #2A2A2A;
+    background-color: #2A2A2A;
 }
 
 button:active {
-  background-color: #323232;
+    background-color: #323232;
 }
 
 button#clearRequest {
-  background-color: #a30000;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: white;
-  display: block;
-  padding: 5px;
-  font-size: 10px;
-  text-transform: none;
-  font-weight: bold;
+    background-color: #a30000;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ddd;
+    display: block;
+    padding: 5px 20px;
+    font-size: 10px;
+    text-transform: uppercase;
 }
 
 button#clearRequest:hover {
-  background-color: darkred;
-  cursor: help;
+    background-color: darkred;
+    cursor: help;
 }
 
 button#clearRequest:active {
-  background-color: #a30000;
+    background-color: #a30000;
 }
 
 *:disabled {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 form button[type=submit]:disabled {
-  background-color: #323232;
+    background-color: #323232;
 }
 
 button#clearRequest:disabled {
-  background-color: #a30000;
+    background-color: #a30000;
 }
 
 
 p#info {
-  display: none;
+    display: none;
 }
 
 
