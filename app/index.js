@@ -86,11 +86,11 @@ function SendRequest(minutes) {
 
         }
 
-        const text = submitButton.innerText
         submitButton.innerText = "...";
         Promise.all(promises).then(() => {
-            submitButton.innerText = text
+            submitButton.innerText = "add time"
         })
+		timeCounter.value = "1"
 
 
     })
