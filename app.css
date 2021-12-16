@@ -89,8 +89,12 @@ button#clearRequest {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 20px;
-  height: 12px;
+  color: white;
+  display: block;
+  padding: 5px;
+  font-size: 10px;
+  text-transform: none;
+  font-weight: bold;
 }
 
 button#clearRequest:hover {
@@ -114,10 +118,6 @@ button#clearRequest:disabled {
   background-color: #a30000;
 }
 
-button#clearRequest > img {
-  height: 100%;
-  width: 100%;
-}
 
 p#info {
   display: none;
