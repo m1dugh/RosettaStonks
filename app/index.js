@@ -40,7 +40,6 @@ window.onload = async () => {
     })
 
     clearRequest.onclick = (e) => {
-        print_data("click")
         chrome.storage.sync.set({ready: false})
     };
 

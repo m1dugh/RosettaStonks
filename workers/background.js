@@ -7,16 +7,15 @@ const icons = {
 const maxRequestAge = 5 * 60 * 60 * 1000;
 
 chrome.tabs.onActivated.addListener(async ({tabId}) => {
-
     chrome.tabs.get(tabId, (tab) => {
         if (!tab)
             return;
         const urlValid = tab.url.includes("rosettastone.com");
-        chrome.action.setIcon({
+        /*chrome.action.setIcon({
             path: {
                 128: urlValid ? icons.enabled : icons.disabled
             }
-        }, () => null)
+        }, () => null)*/
         chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
     })
 
