@@ -70,8 +70,8 @@ function SendRequest(minutes) {
 
         const promises = []
         while (minutes > 0) {
-            body.documentElement.getElementsByTagName("delta_time")[0].innerHTML =
-                (minutes > 20 ? 20 : minutes).toString()
+			const time = minutes > 20 ? 20 * 60 * 1000 : minutes * 60 * 1000;
+            body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = time.toString();
             body.documentElement.getElementsByTagName("updated_at")[0].innerHTML =
                 Date.now().toString()
             const data = `<${rootTag}>${body.documentElement.innerHTML}</${rootTag}>`
