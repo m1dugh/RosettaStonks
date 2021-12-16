@@ -1,3 +1,7 @@
+// the max time a request can add to the time
+const MAX_TIME = 500000;
+
+
 const status = document.getElementById("status")
 const timeCounter = document.getElementById("timeCounter");
 
@@ -61,16 +65,16 @@ window.onload = async () => {
 function SendRequest(minutes) {
     chrome.storage.sync.get(["request"], ({request}) => {
         const body = new DOMParser().parseFromString(request.body, "text/xml");
-        const maxTime = 20 * 60 * 1000;
 
         const rootTag = body.documentElement.tagName
 
 
         request.headers["Access-Control-Allow-Origin"] = "*"
 
+        let remainingTime = minutes * 60 * 1000;
         const promises = []
-        while (minutes > 0) {
-			const time = minutes > 20 ? 20 * 60 * 1000 : minutes * 60 * 1000;
+        while (remainingTime > 0) {
+            const time = remainingTime > MAX_TIME ? MAX_TIME : remainingTime;
             body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = time.toString();
             body.documentElement.getElementsByTagName("updated_at")[0].innerHTML =
                 Date.now().toString()
@@ -82,7 +86,7 @@ function SendRequest(minutes) {
             }).then((res) => print_data(res.status))
                 .catch((err) => print_data(err.stack)))
 
-            minutes -= 20;
+            remainingTime -= MAX_TIME;
 
         }
 
@@ -90,7 +94,7 @@ function SendRequest(minutes) {
         Promise.all(promises).then(() => {
             submitButton.innerText = "add time"
         })
-		timeInput.value = "1"
+        timeInput.value = "1"
 
 
     })

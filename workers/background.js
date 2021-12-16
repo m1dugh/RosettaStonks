@@ -3,33 +3,37 @@ const icons = {
     disabled: "images/disabled-icon.png"
 }
 
+const filterObject = {
+    urls: ["https://tracking.rosettastone.com/*"]
+}
+
 // forces the request to be dropped if older than 5h
 const maxRequestAge = 5 * 60 * 60 * 1000;
 
-chrome.tabs.onActivated.addListener(async ({tabId}) => {
-    chrome.tabs.get(tabId, (tab) => {
-        if (!tab)
-            return;
-        const urlValid = tab.url.includes("rosettastone.com");
-        /*chrome.action.setIcon({
-            path: {
-                128: urlValid ? icons.enabled : icons.disabled
-            }
-        }, () => null)*/
+
+// chrome.runtime.onInstalled.addListener(() => {
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === "complete") {
+        const urlValid = tab?.url.includes("rosettastone.com")
         chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
-    })
+    }
 
     chrome.storage.sync.get(["ready", "timestamp"], ({ready, timestamp}) => {
         if (ready && Date.now() - timestamp > maxRequestAge)
             chrome.storage.sync.set({ready: false})
+
     });
+})
+
+chrome.tabs.onActivated.addListener(({tabId}) => {
+
+    chrome.tabs.get(tabId, (tab) => {
+        const urlValid = tab?.url.includes("rosettastone.com")
+        chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
+    })
 
 });
-
-
-const filterObject = {
-    urls: ["https://tracking.rosettastone.com/*"]
-}
 
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
@@ -78,3 +82,5 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
     });
 
 }, filterObject, ["requestHeaders", "extraHeaders"])
+
+//});
