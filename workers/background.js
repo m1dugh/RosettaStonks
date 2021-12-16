@@ -13,26 +13,33 @@ const maxRequestAge = 5 * 60 * 60 * 1000;
 
 // chrome.runtime.onInstalled.addListener(() => {
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete") {
-        const urlValid = tab?.url.includes("rosettastone.com")
-        chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
-    }
+const onTabUpdate = (tab) => {
+    const urlValid = tab?.url.includes("rosettastone.com")
+
+    chrome.action.setBadgeBackgroundColor({
+        color: urlValid ? "green" : "red"
+    }, () => null)
+    chrome.action.setBadgeText({
+        text: urlValid ? "stonks" : "not stonks"
+    })
+
+    chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
 
     chrome.storage.sync.get(["ready", "timestamp"], ({ready, timestamp}) => {
         if (ready && Date.now() - timestamp > maxRequestAge)
             chrome.storage.sync.set({ready: false})
 
     });
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === "complete") {
+        onTabUpdate(tab);
+    }
 })
 
 chrome.tabs.onActivated.addListener(({tabId}) => {
-
-    chrome.tabs.get(tabId, (tab) => {
-        const urlValid = tab?.url.includes("rosettastone.com")
-        chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
-    })
-
+    chrome.tabs.get(tabId, onTabUpdate)
 });
 
 
