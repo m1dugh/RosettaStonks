@@ -90,7 +90,7 @@ function SendRequest(minutes) {
         Promise.all(promises).then(() => {
             submitButton.innerText = "add time"
         })
-		timeCounter.value = "1"
+		timeInput.value = "1"
 
 
     })
