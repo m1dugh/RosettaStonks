@@ -11,19 +11,41 @@ const filterObject = {
 const maxRequestAge = 5 * 60 * 60 * 1000;
 
 
+const urlValid = (url) => url?.includes("rosettastone.com")
+
+
+
+
 // chrome.runtime.onInstalled.addListener(() => {
 
 const onTabUpdate = (tab) => {
-    const urlValid = tab?.url.includes("rosettastone.com")
+    const valid = urlValid(tab?.url)
+	
+	if(valid)
+		chrome.action.enable(tab)
+	else {
+		chrome.action.disable(tab)
+		chrome.action.setBadgeText({text: ""});
+	}
 
-    chrome.action.setBadgeBackgroundColor({
-        color: urlValid ? "green" : "red"
-    }, () => null)
-    chrome.action.setBadgeText({
-        text: urlValid ? "stonks" : "not stonks"
-    })
+    
+	if(valid)
+		chrome.storage.sync.get(["ready"], ({ready}) => {
+			chrome.action.setBadgeText({
+        		text:  ready ? "ready" : "not ready"
+    		})
 
-    chrome.action.setPopup({popup: urlValid ? "/index.html" : ""}, () => null)
+			chrome.action.setBadgeBackgroundColor({
+        		color: ready ? "green" : "red"
+    		}, () => null)
+
+		})
+    	
+	else
+		chrome.action.setBadgeText({text: ""})
+
+
+    chrome.action.setPopup({popup: valid ? "/index.html" : ""}, () => null)
 
     chrome.storage.sync.get(["ready", "timestamp"], ({ready, timestamp}) => {
         if (ready && Date.now() - timestamp > maxRequestAge)
@@ -31,6 +53,15 @@ const onTabUpdate = (tab) => {
 
     });
 }
+
+
+chrome.storage.onChanged.addListener(async (changes, namespace) => {
+	const [tab] = await chrome.tabs.query({active: true, currentWindow: true})
+	if(changes["ready"]) {
+		onTabUpdate(tab)
+	}
+})
+
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === "complete") {
