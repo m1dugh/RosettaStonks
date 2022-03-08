@@ -1,7 +1,7 @@
 {
 	"name": "RosettaStonks",
 	"description": "ah oui oui oui",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "workers/background.js"
@@ -22,7 +22,8 @@
 		"128": "/images/icon.png"
 	},
 	"host_permissions": [
-		"*://*.rosettastone.com/"
+		"*://totale.rosettastone.com/",
+		"*://tracking.rosettastone.com/"
 	]
 }
 

@@ -17,6 +17,8 @@ Rosetta Stonks is a chrome extension allowing you enhance your rosetta stone sta
 ![](images/readme/unpacked.png)
 ### How to use ?
 
+__*WARNING: RosettaStonks will not work under any other product than foundations.*__
+
 Download the chrome extension, connect yourself to your 
 `rosetta stone` account and complete any path question. 
 

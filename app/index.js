@@ -1,5 +1,5 @@
 // the max time a request can add to the time
-const MAX_TIME = 500000;
+const MAX_TIME = 480000;
 
 
 const status = document.getElementById("status")

@@ -13,9 +13,6 @@ const maxRequestAge = 5 * 60 * 60 * 1000;
 
 const urlValid = (url) => url?.includes("rosettastone.com")
 
-
-
-
 // chrome.runtime.onInstalled.addListener(() => {
 
 const onTabUpdate = (tab) => {
@@ -80,8 +77,11 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
             if (ready)
                 return;
 
-            if (!(details.type === "xmlhttprequest") || !(details.method === "POST"))
+            const endpoint = details.url.split('?')[0].split("/").pop()
+
+            if (!(details.type === "xmlhttprequest") || !(details.method === "POST") || endpoint !== "path_scores")
                 return;
+
 
             const bodyString = new TextDecoder().decode(details.requestBody?.raw[0]?.bytes)
             if (!bodyString.includes("delta_time"))
