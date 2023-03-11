@@ -7,7 +7,7 @@
 		"service_worker": "workers/background.js"
 	},
 	"action": {
-		"default_popup": "index.html",
+		"default_popup": "/static/index.html",
 		"default_icon": "/images/icon.png",
 		"default_title": "rosetta stonks"
 	},
@@ -23,7 +23,9 @@
 	},
 	"host_permissions": [
 		"*://totale.rosettastone.com/",
-		"*://tracking.rosettastone.com/"
+		"*://tracking.rosettastone.com/",
+		"*://learn.rosettastone.com/",
+		"*://gaia-server.rosettastone.com/"
 	]
 }
 

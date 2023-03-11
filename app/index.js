@@ -62,41 +62,70 @@ window.onload = async () => {
     };
 }
 
+function _sendRequestFoundation(minutes, request) {
+
+    const body = new DOMParser().parseFromString(request.body, "text/xml");
+
+    const rootTag = body.documentElement.tagName
+
+
+    request.headers["Access-Control-Allow-Origin"] = "*"
+
+    let remainingTime = minutes * 60 * 1000;
+    const promises = []
+    while (remainingTime > 0) {
+        const time = remainingTime > MAX_TIME ? MAX_TIME : remainingTime;
+        body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = time.toString();
+        body.documentElement.getElementsByTagName("updated_at")[0].innerHTML =
+            Date.now().toString()
+        const data = `<${rootTag}>${body.documentElement.innerHTML}</${rootTag}>`
+        promises.push(fetch(request.url, {
+            method: "POST",
+            headers: request.headers,
+            body: data
+        }).then((res) => print_data(res.status))
+            .catch((err) => print_data(err.stack)))
+
+        remainingTime -= MAX_TIME;
+
+    }
+
+    submitButton.innerText = "...";
+    Promise.all(promises).then(() => {
+        submitButton.innerText = "add time"
+    })
+    timeInput.value = "1"
+
+}
+
+function _sendRequestFluencyBuilder(minutes, request) {
+    const body = request.body
+
+    for (let i in body.variables.messages) {
+        body.variables.messages[i].durationMs = minutes * 60 * 1000
+    }
+    request.headers["Access-Control-Allow-Origin"] = "*"
+    submitButton.innerText = "..."
+    fetch(request.url, {
+        method: "POST",
+        headers: request.headers,
+        body: JSON.stringify(body)
+    }).catch((err) => {
+        print_data(err.stack)
+    }).then((res) => {
+        print_data(res.status)
+        submitButton.innerText = "add time"
+    })
+    timeInput.value = "1"
+}
+
 function SendRequest(minutes) {
     chrome.storage.sync.get(["request"], ({request}) => {
-        const body = new DOMParser().parseFromString(request.body, "text/xml");
-
-        const rootTag = body.documentElement.tagName
-
-
-        request.headers["Access-Control-Allow-Origin"] = "*"
-
-        let remainingTime = minutes * 60 * 1000;
-        const promises = []
-        while (remainingTime > 0) {
-            const time = remainingTime > MAX_TIME ? MAX_TIME : remainingTime;
-            body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = time.toString();
-            body.documentElement.getElementsByTagName("updated_at")[0].innerHTML =
-                Date.now().toString()
-            const data = `<${rootTag}>${body.documentElement.innerHTML}</${rootTag}>`
-            promises.push(fetch(request.url, {
-                method: "POST",
-                headers: request.headers,
-                body: data
-            }).then((res) => print_data(res.status))
-                .catch((err) => print_data(err.stack)))
-
-            remainingTime -= MAX_TIME;
-
+        if(request.product === "foundations") {
+            _sendRequestFoundation(minutes, request)
+        } else if (request.product === "fluency_builder") {
+            _sendRequestFluencyBuilder(minutes, request)
         }
-
-        submitButton.innerText = "...";
-        Promise.all(promises).then(() => {
-            submitButton.innerText = "add time"
-        })
-        timeInput.value = "1"
-
-
     })
 }
 
