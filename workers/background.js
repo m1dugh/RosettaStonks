@@ -24,12 +24,12 @@ const filterFoundations = {
 }
 
 
-function onBeforeRequestFoundations(endpoint, body, details) {
+function onBeforeRequestFoundations(endpoint, bodyString, details) {
     if(endpoint !== "path_scores" || !bodyString.includes("delta_time"))
         return
 
-    chrome.storage.session.get([FOUNDATIONS]).then(({foundations: { ready, timestamp }}) => {
-        if (ready && timestamp - Date.now() < MAX_REQUEST_AGE) {
+    chrome.storage.session.get([FOUNDATIONS]).then(({foundations}) => {
+        if (foundations?.ready && foundations?.timestamp - Date.now() < MAX_REQUEST_AGE) {
             return
         }
 
@@ -51,7 +51,7 @@ function onBeforeRequestFoundations(endpoint, body, details) {
 function onBeforeSendHeadersFoundations(details) {
 
     chrome.storage.session.get([FOUNDATIONS]).then(({ foundations }) => {
-        if (fluency_builder.requestId !== details.requestId) {
+        if (foundations?.requestId !== details.requestId) {
             return
         }
 
@@ -170,9 +170,9 @@ const urlValid = (url) => url?.includes("rosettastone.com")
 function getProduct(url) {
     if(url.match(/learn\.rosettastone\.com/) !== null) {
         return FLUENCY_BUILDER
+    } else if (url.match(/totale\.rosettastone\.com/) !== null ){
+        return FOUNDATIONS
     }
-
-    // TODO: match specifically foundatins
 
     return FOUNDATIONS
 }

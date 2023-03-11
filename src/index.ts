@@ -4,6 +4,7 @@ const submit_button = form?.querySelector<HTMLButtonElement>("button[type=submit
 
 const FLUENCY_BUILDER = "fluency_builder"
 const FOUNDATIONS = "foundations"
+const NONE = null
 const MAX_TIME = 480000;
 
 interface CustomRequest {
@@ -39,11 +40,10 @@ async function getTab() {
 function getProduct(url: string | undefined) {
     if(url?.match(/learn\.rosettastone\.com/) !== null) {
         return FLUENCY_BUILDER
+    } else if (url?.match(/totale\.rosettastone\.com/) !== null) {
+        return FOUNDATIONS
     }
-
-    // TODO: match specifically foundatins
-
-    return FOUNDATIONS
+    return null
 }
 
 function createRandomUUID() {
@@ -86,7 +86,13 @@ function changeBodyFluencyBuilder(bodyString: string, minutes: number): string {
 }
 
 function changeBodyFoundations(bodyString: string, timeMs: number): string {
-    return ""
+    const body = new DOMParser().parseFromString(bodyString, "text/xml");
+    const rootTag = body.documentElement.tagName
+
+    body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = timeMs.toString();
+    body.documentElement.getElementsByTagName("updated_at")[0].innerHTML = Date.now().toString()
+
+    return `<${rootTag}>${body.documentElement.innerHTML}</${rootTag}>`
 }
 
 function sendRequest(request: CustomRequest, tabId: number) {
@@ -145,8 +151,9 @@ async function main() {
                 submit_button.innerText = "..."
                 while (remainingTime > 0) {
                     const requestTime = remainingTime > MAX_TIME ? MAX_TIME : remainingTime;
-                    values.request.body = changeBodyFoundations(values.request.body, time)
+                    values.request.body = changeBodyFoundations(values.request.body, requestTime)
                     const req = values.request as CustomRequest
+                    print_data(req)
                     promises.push(sendRequest(req, tab.id))
                     remainingTime -= MAX_TIME
                 }
@@ -155,6 +162,8 @@ async function main() {
                     submit_button.disabled = false
                 })
             }
+
+            time_to_add.value = "0"
         })
 
     })
