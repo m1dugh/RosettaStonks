@@ -174,15 +174,15 @@ function getProduct(url) {
         return FOUNDATIONS
     }
 
-    return FOUNDATIONS
+    return null
 }
 
 function onTabUpdate(tab) {
     const valid = urlValid(tab?.url)
     
-    if(valid) {
+    const product = getProduct(tab.url)
+    if(valid && product !== null) {
         chrome.action.enable(tab.id)
-        const product = getProduct(tab.url)
         chrome.storage.session.get([product]).then(values => {
             const readyState = values[product]?.ready
             if (readyState) {
