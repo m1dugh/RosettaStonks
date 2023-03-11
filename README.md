@@ -1,4 +1,4 @@
-#RosettaStonks
+# RosettaStonks
 
 ------
 
@@ -17,10 +17,11 @@ Rosetta Stonks is a chrome extension allowing you enhance your rosetta stone sta
 ![](images/readme/unpacked.png)
 ### How to use ?
 
-__*WARNING: RosettaStonks will not work under any other product than foundations.*__
-
 Download the chrome extension, connect yourself to your 
 `rosetta stone` account and complete any path question. 
+
+It now works with both `Foundations` and `Fluency Builder` rosetta stone
+products as of version `v2.0.0`.
 
 > the extension should show `status: ready` top left
 
@@ -28,4 +29,3 @@ enter the number of minutes you want to add to your current time
 and click `add time`
 
 > *Note: as said on `rosetta stone` statistics page, time can take up to 24h to update.*
-
