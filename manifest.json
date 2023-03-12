@@ -1,14 +1,14 @@
 {
 	"name": "RosettaStonks",
 	"description": "ah oui oui oui",
-	"version": "1.1.2",
+	"version": "2.0.1",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "workers/background.js"
 	},
 	"action": {
 		"default_popup": "/static/index.html",
-		"default_icon": "/images/icon.png",
+		"default_icon": "/static/rosettastonks.png",
 		"default_title": "rosetta stonks"
 	},
 	"permissions": [
@@ -19,7 +19,7 @@
 
 	],
 	"icons": {
-		"128": "/images/icon.png"
+		"128": "/static/rosettastonks.png"
 	},
 	"host_permissions": [
 		"*://totale.rosettastone.com/",
