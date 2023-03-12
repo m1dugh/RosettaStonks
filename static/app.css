@@ -1,6 +1,6 @@
 body {
-    height: 220px;
-    width: 200px;
+    height: 250px;
+    width: 220px;
     padding: 10px;
     background-color: #202020;
     color: cornflowerblue;
@@ -10,49 +10,51 @@ body {
     font-size: 12px;
 }
 
-div#status::before {
-    content: "status:\a";
-    white-space: pre;
-}
-
-div#timeCounter::before {
-    content: "request age:\a";
-    white-space: pre;
-}
-
-div#statusPanel {
+header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    flex: 3;
 }
 
-.bar {
-    width: 90vw;
-    height: 1px;
-    background-color: #888;
+header::after {
+    content: '';
+    width: 95%;
     align-self: center;
-    margin: 5px 0;
+    height: 1px;
+    background-color: cornflowerblue;
+    transform: translateY(12px);
 }
 
-h2 {
+header > strong , header > h2 {
     text-align: center;
     text-transform: uppercase;
+}
+
+main {
+    flex: 4;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    height: 50%;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
     margin-bottom: 30px;
 }
 
-form input#timeInput {
+form input#time_to_add {
     all: unset;
     background-color: #323232;
     padding: 5px;
     margin-top: 5px;
     border-radius: 5px;
+    font-size: 15px;
+    text-align: right;
+}
+
+form label[for=time_to_add] {
+    font-size: 15px;
 }
 
 form input::-webkit-outer-spin-button,
@@ -61,8 +63,9 @@ form input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-form input#timeInput[type=number] {
-    -moz-appearance: textfield;
+form > span.button_bar > button[type=submit] {
+    width: 50%;
+    height: 100%;
 }
 
 button {
@@ -85,43 +88,13 @@ button:active {
     background-color: #323232;
 }
 
-button#clearRequest {
-    background-color: #a30000;
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ddd;
-    display: block;
-    padding: 5px 20px;
-    font-size: 10px;
-    text-transform: uppercase;
+span.button_bar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
 }
 
-button#clearRequest:hover {
-    background-color: darkred;
-    cursor: help;
+span.button_bar > iframe {
+    width: 30%;
 }
-
-button#clearRequest:active {
-    background-color: #a30000;
-}
-
-*:disabled {
-    opacity: 0.5;
-}
-
-form button[type=submit]:disabled {
-    background-color: #323232;
-}
-
-button#clearRequest:disabled {
-    background-color: #a30000;
-}
-
-
-p#info {
-    display: none;
-}
-
-

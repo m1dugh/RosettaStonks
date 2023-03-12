@@ -186,10 +186,10 @@ function onTabUpdate(tab) {
         chrome.storage.session.get([product]).then(values => {
             const readyState = values[product]?.ready
             if (readyState) {
-                chrome.action.setBadgeText({text: "ready"})
+                chrome.action.setBadgeText({text: "stonks"})
                 chrome.action.setBadgeBackgroundColor({color: "green"}, () => null)
             } else {
-                chrome.action.setBadgeText({text: "not ready"})
+                chrome.action.setBadgeText({text: "not stonks"})
                 chrome.action.setBadgeBackgroundColor({color: "red"}, () => null)
             }
         })
