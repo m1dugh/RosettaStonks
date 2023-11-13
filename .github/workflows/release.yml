@@ -56,10 +56,12 @@ jobs:
           path: ./dist
       - name: Create release dist
         run: |
-          tar -cvf ./release.tar.gz ./dist/ ./package.json ./workers/ ./manifest.json ./static
+          mkdir rosettastonks
+          mv ./dist/ ./package.json ./workers/ ./manifest.json ./static ./rosettastonks
+          tar -cvf ./rosettastonks.tar.gz ./rosettastonks
       - name: Create github release
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ./release.tar.gz
+          artifacts: ./rosettastonks.tar.gz
 
