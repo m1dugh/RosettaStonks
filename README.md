@@ -8,7 +8,7 @@ Rosetta Stonks is a chrome extension allowing you enhance your rosetta stone sta
 
 
 ### How to install ?
-1. Downloads the zip folder from the latest release.
+1. Downloads the `rosettastonks.tar.gz` folder from the latest release.
 2. in the extension menu (`<browser_name>://extensions`, e.g. `chrome://extensions`)
 3. activate developper mode 
 ![](images/readme/developer_mode.png)
