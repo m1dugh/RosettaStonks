@@ -4,7 +4,8 @@
         "outDir": "./dist/frontend",
         "baseUrl": "./src/frontend",
     },
-    "exclude": [
-        "./src/workers/**",
+    "include": [
+        "./src/lib/*.ts",
+        "./src/frontend/*.ts",
     ]
 }

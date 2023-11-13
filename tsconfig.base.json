@@ -8,7 +8,7 @@
         "strict": true,
         "skipLibCheck": true,
         "paths": {
-            "lib/*.ts": [
+            "@lib/*.ts": [
                 "./src/lib/*.ts"
             ]
         }
