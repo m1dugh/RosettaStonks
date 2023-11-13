@@ -4,7 +4,9 @@
     "description": "A performance enhancer for Rosetta stone.",
     "main": "dist/bundle.js",
     "scripts": {
-        "build": "tsc",
+        "build:front": "tsc -p ./tsconfig.front.json",
+        "build:workers": "tsc -p ./tsconfig.workers.json",
+        "build": "npm run build:front && npm run build:workers",
         "start": "tsc --watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
