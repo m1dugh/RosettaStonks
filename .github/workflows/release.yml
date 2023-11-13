@@ -53,9 +53,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
-          path: ./
+          path: ./dist
       - name: Create release dist
-        run:
+        run: |
+          ls .
+          ls dist
           tar -cvf ./release.tar.gz
           ./dist/ ./package.json ./workers/
           ./manifest.json ./static
