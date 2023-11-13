@@ -125,6 +125,8 @@ async function main() {
 
         const time = Number(time_to_add.value)
         chrome.storage.session.get([product]).then((store) => {
+            if (product === null)
+                return;
             const values = store[product]
             if(!values?.ready)
                 return
