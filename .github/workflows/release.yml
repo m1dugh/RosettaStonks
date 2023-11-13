@@ -56,11 +56,7 @@ jobs:
           path: ./dist
       - name: Create release dist
         run: |
-          ls .
-          ls dist
-          tar -cvf ./release.tar.gz
-          ./dist/ ./package.json ./workers/
-          ./manifest.json ./static
+          tar -cvf ./release.tar.gz ./dist/ ./package.json ./workers/ ./manifest.json ./static
       - name: Create github release
         id: create_release
         uses: ncipollo/release-action@v1
