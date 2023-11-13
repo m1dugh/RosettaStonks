@@ -4,7 +4,7 @@
 	"version": "2.0.2",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "./dist/workers/index.js"
+		"service_worker": "./dist/workers/background.js"
 	},
 	"action": {
 		"default_popup": "/static/index.html",

@@ -4,6 +4,7 @@
         "baseUrl": "./src/workers",
         "rootDir": "./src/workers",
         "outDir": "./dist/workers",
+        "noImplicitAny": false,
     },
     "exclude": [
         "./src/frontend/**"
