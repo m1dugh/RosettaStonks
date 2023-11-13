@@ -3,7 +3,7 @@ name: Create release on tag
 on:
   push:
     tags:
-      - 'v[0-9]+\.[0-9]+\.[0-9]+.*'
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
   check_version:
@@ -20,6 +20,7 @@ jobs:
         run: |
           tag_version=$(echo $GITHUB_REF_NAME | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+.*")
           npm_version=$(jq -r '.version' ./manifest.json)
+          echo "$tag_version" "$npm_version"
           [ "$tag_version" = "$npm_version" ] || true
   build:
     runs-on: ubuntu-latest
