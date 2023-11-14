@@ -1,5 +1,5 @@
-import { getProduct } from '../lib/model';
-import { getTimeRequests, CustomRequest } from '../lib/front-utils';
+import { getProduct, CustomRequest } from '../lib/model';
+import { getTimeRequests } from '../lib/front-utils';
 
 const form = document.querySelector<HTMLFormElement>("#add_time_form")
 const time_to_add = form?.querySelector<HTMLInputElement>("#time_to_add")

@@ -4,8 +4,8 @@
     "description": "A performance enhancer for Rosetta stone.",
     "main": "dist/bundle.js",
     "scripts": {
-        "build:front": "webpack",
-        "build:workers": "tsc -p ./tsconfig.workers.json",
+        "build:front": "webpack -c webpack.config.front.js",
+        "build:workers": "webpack -c webpack.config.workers.js",
         "build": "npm run build:front && npm run build:workers",
         "start": "tsc --watch",
         "test": "echo \"Error: no test specified\" && exit 1"

@@ -1,3 +1,5 @@
+import { CustomRequest, Course, StoreProduct } from '../lib/model'
+
 const icons = {
     enabled: "images/icon.png",
     disabled: "images/disabled-icon.png"
@@ -10,8 +12,13 @@ const filterObject = {
     ]
 }
 
-const FLUENCY_BUILDER = "fluency_builder"
+const FLUENCY_BUILDER = "fluencyBuilder"
 const FOUNDATIONS = "foundations"
+
+interface StoreProducts {
+    foundations?: StoreProduct;
+    fluencyBuilder?: StoreProduct;
+};
 
 // forces the request to be dropped if older than 5h
 const MAX_REQUEST_AGE = 5 * 60 * 60 * 1000;
@@ -25,42 +32,58 @@ const filterFoundations = {
 
 
 function onBeforeRequestFoundations(endpoint, bodyString, details) {
-    if(endpoint !== "path_scores" || !bodyString.includes("delta_time"))
-        return
-
-    chrome.storage.session.get([FOUNDATIONS]).then(({foundations}) => {
-        if (foundations?.ready && foundations?.timestamp - Date.now() < MAX_REQUEST_AGE) {
-            return
-        }
-
-        chrome.storage.session.set({
-            foundations: {
-                request: {
-                    headers: details.requestHeaders,
-                    body: bodyString,
-                    url: details.url,
-                },
-                ready: false,
-                requestId: details.requestId,
-                timestamp: Date.now(),
+    if (details.method === "POST" && endpoint === "path_scores" && bodyString.includes("delta_time")) {
+        chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
+            if (foundations?.timeRequest === undefined) {
+                chrome.storage.session.set({
+                    foundations: {
+                        ...foundations,
+                        timeRequest: {
+                            id: details.requestId,
+                            headers: details.requestHeaders,
+                            body: bodyString,
+                            url: details.url,
+                        },
+                        ready: false,
+                    },
+                })
             }
         })
-    })
+    } else if (details.method === "GET" && endpoint === "path_step_scores") {
+        chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
+            if (foundations?.timeRequest === undefined) {
+                chrome.storage.session.set({
+                    foundations: {
+                        ...foundations,
+                        courseRequest: {
+                            id: details.requestId,
+                            headers: details.requestHeaders,
+                            body: bodyString,
+                            url: details.url,
+                        },
+                    },
+                })
+            }
+        })
+    }
 }
 
 function onBeforeSendHeadersFoundations(details) {
 
-    chrome.storage.session.get([FOUNDATIONS]).then(({ foundations }) => {
-        if (foundations?.requestId !== details.requestId) {
-            return
-        }
-
+    chrome.storage.session.get([FOUNDATIONS]).then(({ foundations }: StoreProducts) => {
         const headers = {};
         for (let {name, value} of details.requestHeaders)
             headers[name] = value
-        foundations.request.headers = headers
-        foundations.timestamp = Date.now()
-        foundations.ready = true
+        if (foundations?.timeRequest?.id === details.requestId) {
+            if (foundations?.timeRequest)
+                foundations.timeRequest.headers = headers
+
+            if (foundations)
+                foundations.ready = true
+        } else if (foundations?.courseRequest?.id === details.requestId) {
+            if (foundations?.courseRequest)
+                foundations.courseRequest.headers = headers
+        }
 
         chrome.storage.session.set({
             foundations
@@ -68,10 +91,8 @@ function onBeforeSendHeadersFoundations(details) {
     })
 }
 
+console.log("test")
 chrome.webRequest.onBeforeRequest.addListener((details) => {
-    if (details.method !== "POST")
-        return
-
     const endpoint = details.url
         .split('?')[0]
         .split("/")

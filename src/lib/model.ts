@@ -6,6 +6,14 @@ export interface ProductConfig {
     maxTime?: Date;
 };
 
+export interface CustomRequest {
+    url: string;
+    body: string;
+    headers: any;
+
+    id?: Number;
+};
+
 export const FluencyBuilderConfig: ProductConfig = {
     name: "fluency-builder",
     matcher: /learn\.rosettastone\.com/,
@@ -36,4 +44,22 @@ export function getProduct(url: string)
     }
 
     return null
+}
+
+interface CoursePath {
+    id: string;
+    challengeCount: Number;
+}
+
+export interface Course {
+    name: string;
+    paths: CoursePath[];
+}
+
+export interface StoreProduct {
+    config: ProductConfig;
+    course?: Course;
+    timeRequest?: CustomRequest;
+    courseRequest?: CustomRequest;
+    ready: boolean;
 }

@@ -1,10 +1,4 @@
-import { ProductConfig, FluencyBuilderConfig, FoundationsConfig } from './model';
-
-export interface CustomRequest {
-    url: string;
-    body: string;
-    headers: any;
-};
+import { ProductConfig, FluencyBuilderConfig, FoundationsConfig, CustomRequest } from './model';
 
 function createRandomUUID() {
     const seqlen = 8
