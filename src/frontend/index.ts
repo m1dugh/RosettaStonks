@@ -61,6 +61,8 @@ async function main() {
         e.preventDefault()
 
         const time = new Date(Number(time_to_add.value) * 60 * 1000)
+        console.log(product)
+
         if (product === null)
             return;
         chrome.storage.session.get([product.name]).then((store) => {
