@@ -32,6 +32,7 @@ const filterFoundations = {
 
 
 function onBeforeRequestFoundations(endpoint, bodyString, details) {
+    console.log(details.method, endpoint)
     if (details.method === "POST" && endpoint === "path_scores" && bodyString.includes("delta_time")) {
         chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
             if (foundations?.timeRequest === undefined) {
@@ -50,8 +51,10 @@ function onBeforeRequestFoundations(endpoint, bodyString, details) {
             }
         })
     } else if (details.method === "GET" && endpoint === "path_step_scores") {
+        console.log("found")
         chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
-            if (foundations?.timeRequest === undefined) {
+            console.log(foundations)
+            if (foundations?.courseRequest === undefined) {
                 chrome.storage.session.set({
                     foundations: {
                         ...foundations,
@@ -83,7 +86,8 @@ function onBeforeSendHeadersFoundations(details) {
         } else if (foundations?.courseRequest?.id === details.requestId) {
             if (foundations?.courseRequest)
                 foundations.courseRequest.headers = headers
-        }
+        } else 
+            return;
 
         chrome.storage.session.set({
             foundations
@@ -91,7 +95,6 @@ function onBeforeSendHeadersFoundations(details) {
     })
 }
 
-console.log("test")
 chrome.webRequest.onBeforeRequest.addListener((details) => {
     const endpoint = details.url
         .split('?')[0]
