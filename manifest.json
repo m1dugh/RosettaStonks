@@ -1,7 +1,7 @@
 {
 	"name": "RosettaStonks",
 	"description": "ah oui oui oui",
-	"version": "2.1.0-BETA",
+	"version": "2.1.1-BETA",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "./dist/workers/background.js"

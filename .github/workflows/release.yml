@@ -57,7 +57,7 @@ jobs:
       - name: Create release dist
         run: |
           mkdir rosettastonks
-          mv ./dist/ ./package.json ./workers/ ./manifest.json ./static ./rosettastonks
+          mv ./dist/ ./package.json ./manifest.json ./static ./rosettastonks
           tar -cvf ./rosettastonks.tar.gz ./rosettastonks
       - name: Create github release
         id: create_release
