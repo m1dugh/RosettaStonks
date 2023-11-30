@@ -1,7 +1,7 @@
 {
 	"name": "RosettaStonks",
 	"description": "ah oui oui oui",
-	"version": "2.0.2",
+	"version": "2.1.0-BETA",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "./dist/workers/background.js"
@@ -16,7 +16,6 @@
 		"webRequest",
 		"tabs",
 		"scripting"
-
 	],
 	"icons": {
 		"128": "/static/rosettastonks.png"
