@@ -23,6 +23,7 @@ jobs:
           echo "$tag_version" "$npm_version"
           [ "$tag_version" = "$npm_version" ]
   build:
+    if: always()
     needs:
       - check_version
     runs-on: ubuntu-latest

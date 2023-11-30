@@ -1,6 +1,6 @@
 {
     "name": "rosettastonks",
-    "version": "2.1.1-BETA",
+    "version": "2.1.2-BETA",
     "description": "A performance enhancer for Rosetta stone.",
     "main": "dist/bundle.js",
     "scripts": {
