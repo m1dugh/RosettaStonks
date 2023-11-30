@@ -1,4 +1,4 @@
-import { CustomRequest, Course, StoreProduct } from '../lib/model'
+import { CustomRequest, Course, StoreProduct, StoreProducts } from '../lib/model'
 
 const icons = {
     enabled: "images/icon.png",
@@ -15,11 +15,6 @@ const filterObject = {
 const FLUENCY_BUILDER = "fluencyBuilder"
 const FOUNDATIONS = "foundations"
 
-interface StoreProducts {
-    foundations?: StoreProduct;
-    fluencyBuilder?: StoreProduct;
-};
-
 // forces the request to be dropped if older than 5h
 const MAX_REQUEST_AGE = 5 * 60 * 60 * 1000;
 
@@ -31,9 +26,8 @@ const filterFoundations = {
 }
 
 
-function onBeforeRequestFoundations(endpoint, bodyString, details) {
-    console.log(details.method, endpoint)
-    if (details.method === "POST" && endpoint === "path_scores" && bodyString.includes("delta_time")) {
+function onBeforeRequestFoundations(endpoint, bodyString: string | null, details) {
+    if (details.method === "POST" && endpoint === "path_scores" && bodyString?.includes("delta_time")) {
         chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
             if (foundations?.timeRequest === undefined) {
                 chrome.storage.session.set({
@@ -51,22 +45,17 @@ function onBeforeRequestFoundations(endpoint, bodyString, details) {
             }
         })
     } else if (details.method === "GET" && endpoint === "path_step_scores") {
-        console.log("found")
         chrome.storage.session.get([FOUNDATIONS]).then(({foundations}: StoreProducts) => {
-            console.log(foundations)
-            if (foundations?.courseRequest === undefined) {
-                chrome.storage.session.set({
-                    foundations: {
-                        ...foundations,
-                        courseRequest: {
-                            id: details.requestId,
-                            headers: details.requestHeaders,
-                            body: bodyString,
-                            url: details.url,
-                        },
+            chrome.storage.session.set({
+                foundations: {
+                    ...foundations,
+                    courseRequest: {
+                        id: details.requestId,
+                        headers: details.requestHeaders,
+                        url: details.url,
                     },
-                })
-            }
+                },
+            })
         })
     }
 }
@@ -102,9 +91,10 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
         .pop()
 
     const rawBodies = details.requestBody?.raw
-    if (rawBodies === undefined)
-        return;
-    const body = new TextDecoder().decode(rawBodies[0]?.bytes)
+    let body: string | null = null;
+    if (rawBodies !== undefined)
+        body = new TextDecoder().decode(rawBodies[0]?.bytes)
+
     onBeforeRequestFoundations(endpoint, body, details)
 }, filterFoundations, ["requestBody", "extraHeaders"])
 
@@ -211,7 +201,7 @@ function onTabUpdate(tab) {
     const valid = urlValid(tab?.url)
     
     const product = getProduct(tab.url)
-    if(valid && product !== null) {
+    if(valid && product != null) {
         chrome.action.enable(tab.id)
         chrome.storage.session.get([product]).then(values => {
             const readyState = values[product]?.ready

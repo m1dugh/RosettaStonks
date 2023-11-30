@@ -14,13 +14,17 @@ export interface CustomRequest {
     id?: Number;
 };
 
+export interface StoreProducts {
+    foundations?: StoreProduct;
+    fluencyBuilder?: StoreProduct;
+};
+
 export const FluencyBuilderConfig: ProductConfig = {
     name: "fluency-builder",
     matcher: /learn\.rosettastone\.com/,
     filterUrls: [
         "https://gaia-server.rosettastone.com/graphql"
     ],
-    maxTime: new Date(480000),
 };
 
 export const FoundationsConfig: ProductConfig = {
@@ -29,6 +33,7 @@ export const FoundationsConfig: ProductConfig = {
     filterUrls: [
         "https://tracking.rosettastone.com/*"
     ],
+    maxTime: new Date(480000),
 };
 
 const products: ProductConfig[] = [

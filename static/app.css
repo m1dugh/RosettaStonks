@@ -31,7 +31,11 @@ header > strong , header > h2 {
 }
 
 main {
+    display: flex;
     flex: 4;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 form {
@@ -97,4 +101,11 @@ span.button_bar {
 
 span.button_bar > iframe {
     width: 30%;
+}
+
+button#validateLessonButton {
+    width: 70vw;
+    display: inline-block;
+    justify-self: center;
+    text-align: center;
 }
