@@ -12,7 +12,7 @@ const filterObject = {
     ]
 }
 
-const FLUENCY_BUILDER = "fluencyBuilder"
+const FLUENCY_BUILDER = "fluency_builder"
 const FOUNDATIONS = "foundations"
 
 // forces the request to be dropped if older than 5h
@@ -110,7 +110,7 @@ chrome.webRequest
 // Fluency builder code base.
 const filterFluencyBuilder = {
     urls: [
-        "https://gaia-server.rosettastone.com/graphql"
+        "https://gaia-server.rosettastone.com/*"
     ]
 }
 
@@ -143,8 +143,9 @@ function onBeforeRequestFluencyBuilder(endpoint, bodyString, details) {
 
 function onBeforeSendHeadersFluencyBuilder(details) {
 
+
     chrome.storage.session.get([FLUENCY_BUILDER]).then(({ fluency_builder }) => {
-        if (fluency_builder?.requestId !== details.requestId) {
+        if (fluency_builder?.requestId != details.requestId) {
             return
         }
 

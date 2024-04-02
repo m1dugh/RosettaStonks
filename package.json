@@ -1,9 +1,10 @@
 {
     "name": "rosettastonks",
-    "version": "2.1.2-BETA",
+    "version": "2.1.3",
     "description": "A performance enhancer for Rosetta stone.",
     "main": "dist/bundle.js",
     "scripts": {
+        "build": "npm run build:front && npm run build:workers",
         "build:front": "webpack -c webpack.config.front.js",
         "build:workers": "webpack -c webpack.config.workers.js",
         "build": "npm run build:front && npm run build:workers",
