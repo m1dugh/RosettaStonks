@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "jsx": "react",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "outDir": "./dist/frontend",
+        "baseUrl": ".",
+        "types": ["chrome"],
+        "typeRoots": ["./node_modules/@types" ],
+        "lib": [ "es2020", "dom" ],
+        "paths": {
+            "@common/*.ts": [
+                "../common/*.ts"
+            ]
+        }
+    },
+    "include": [
+        "./*.tsx",
+        "./*.ts"
+    ]
+}

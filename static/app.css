@@ -1,111 +1,24 @@
-body {
-    height: 250px;
-    width: 220px;
-    padding: 10px;
-    background-color: #202020;
-    color: cornflowerblue;
+.root-container {
+    width: 300px;
+    height: 400px;
+    background-color: rgb(30, 30, 30);
     display: flex;
+    color: white;
     flex-direction: column;
-    justify-content: space-around;
-    font-size: 12px;
-}
-
-header {
-    display: flex;
-    flex-direction: column;
-    flex: 3;
-}
-
-header::after {
-    content: '';
-    width: 95%;
-    align-self: center;
-    height: 1px;
-    background-color: cornflowerblue;
-    transform: translateY(12px);
-}
-
-header > strong , header > h2 {
-    text-align: center;
-    text-transform: uppercase;
-}
-
-main {
-    display: flex;
-    flex: 4;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 100%;
-    margin-bottom: 30px;
-}
-
-form input#time_to_add {
-    all: unset;
-    background-color: #323232;
+    font-family: monospace;
     padding: 5px;
-    margin-top: 5px;
-    border-radius: 5px;
-    font-size: 15px;
-    text-align: right;
 }
 
-form label[for=time_to_add] {
-    font-size: 15px;
-}
-
-form input::-webkit-outer-spin-button,
-form input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-form > span.button_bar > button[type=submit] {
-    width: 50%;
-    height: 100%;
-}
-
-button {
-    all: unset;
-    text-transform: uppercase;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    margin-top: auto;
-    border-radius: 5px;
-    background-color: #323232;
-    padding: 5px 0px;
-}
-
-button:hover {
-    background-color: #2A2A2A;
-}
-
-button:active {
-    background-color: #323232;
-}
-
-span.button_bar {
+.header {
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
-span.button_bar > iframe {
-    width: 30%;
-}
-
-button#validateLessonButton {
-    width: 70vw;
-    display: inline-block;
-    justify-self: center;
+    flex-direction: column;
+    justify-content: space-around;
     text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1;
 }
