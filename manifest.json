@@ -1,0 +1,22 @@
+{
+	"name": "RosettaStonks",
+	"description": "Enhances your rosetta stone performances",
+	"version": "3.0.0-alpha-0",
+	"manifest_version": 3,
+
+	"permissions": [
+		"storage",
+		"webRequest",
+		"tabs",
+		"scripting"
+	],
+	"icons": {
+		"128": "/static/rosettastonks.png"
+	},
+	"host_permissions": [
+		"*://totale.rosettastone.com/",
+		"*://tracking.rosettastone.com/",
+		"*://learn.rosettastone.com/",
+		"*://gaia-server.rosettastone.com/"
+	]
+}
