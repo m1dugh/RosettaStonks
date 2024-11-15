@@ -26,6 +26,4 @@ const result = await esbuild.build({
     ...config
 })
 
-console.log(result.outputFiles)
-
 esbuild.stop()
