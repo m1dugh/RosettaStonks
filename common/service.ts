@@ -24,6 +24,11 @@ class FoundationsService implements Service {
     async addTime(timeSeconds: number): Promise<boolean> {
         throw new Error("Not implemented")
     }
+
+    async decreaseTime(timeSeconds: number): Promise<boolean> {
+        // Implementation to decrease time
+        throw new Error("Not implemented")
+    }
 }
 
 class FluencyBuilderService implements Service {
