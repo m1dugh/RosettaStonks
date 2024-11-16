@@ -1,6 +1,7 @@
 {
   "imports": {
     "@luca/esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@^0.11.0",
+    "@std/uuid": "jsr:@std/uuid@^1.0.4",
     "esbuild": "npm:esbuild@^0.24.0",
     "react": "https://esm.sh/react@18.2.0",
     "react-dom/client": "https://esm.sh/react-dom@18.2.0/client/"

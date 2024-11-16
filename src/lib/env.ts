@@ -22,7 +22,3 @@ export const FluencyBuilderRequestFilter = {
         "https://gaia-server.rosettastone.com/*"
     ]
 }
-
-export const FoundationsKey = "foundations"
-export const FluencyBuilderKey = "fluency_builder"
-export const CurrentProductKey = "product"

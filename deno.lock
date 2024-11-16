@@ -4,8 +4,10 @@
     "jsr:@luca/esbuild-deno-loader@*": "0.11.0",
     "jsr:@luca/esbuild-deno-loader@0.11": "0.11.0",
     "jsr:@std/bytes@^1.0.2": "1.0.4",
+    "jsr:@std/crypto@^1.0.3": "1.0.3",
     "jsr:@std/encoding@^1.0.5": "1.0.5",
     "jsr:@std/path@^1.0.6": "1.0.8",
+    "jsr:@std/uuid@^1.0.4": "1.0.4",
     "npm:esbuild@*": "0.24.0",
     "npm:esbuild@0.24": "0.24.0"
   },
@@ -21,11 +23,21 @@
     "@std/bytes@1.0.4": {
       "integrity": "11a0debe522707c95c7b7ef89b478c13fb1583a7cfb9a85674cd2cc2e3a28abc"
     },
+    "@std/crypto@1.0.3": {
+      "integrity": "a2a32f51ddef632d299e3879cd027c630dcd4d1d9a5285d6e6788072f4e51e7f"
+    },
     "@std/encoding@1.0.5": {
       "integrity": "ecf363d4fc25bd85bd915ff6733a7e79b67e0e7806334af15f4645c569fefc04"
     },
     "@std/path@1.0.8": {
       "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    },
+    "@std/uuid@1.0.4": {
+      "integrity": "f4233149cc8b4753cc3763fd83a7c4101699491f55c7be78dc7b30281946d7a0",
+      "dependencies": [
+        "jsr:@std/bytes",
+        "jsr:@std/crypto"
+      ]
     }
   },
   "npm": {
@@ -131,9 +143,18 @@
       ]
     }
   },
+  "remote": {
+    "https://esm.sh/react-dom@18.2.0/client/": "391c0483ce063105b7d0422c653da70d52ac5f4efa02b0873ce8b70c4dc9ff61",
+    "https://esm.sh/react@18.2.0": "04ad7dc6d11fa27b24c136686a334ecdd19e972fae627cd98cbdc13cdac238c2",
+    "https://esm.sh/stable/react@18.2.0/denonext/react.mjs": "3c4f23bcfc53b256fcfaf6f834fa9f584c3bb7be667b2682c6cb6ba8ef88f8e6",
+    "https://esm.sh/v135/react-dom@18.2.0/denonext/client.js": "67082d736d11d0d288a4d10f260ab19cbf556c010b2d057088b0b4a5d10338a5",
+    "https://esm.sh/v135/react-dom@18.2.0/denonext/react-dom.mjs": "8191fc377ea7083cca5640699c4abd75de033089eb932799e29aa04bb136838f",
+    "https://esm.sh/v135/scheduler@0.23.0/denonext/scheduler.mjs": "cdbc6d2823e2c6fffcb14501146ff2602a38c48d3c9dd9268f308e833ede2b49"
+  },
   "workspace": {
     "dependencies": [
       "jsr:@luca/esbuild-deno-loader@0.11",
+      "jsr:@std/uuid@^1.0.4",
       "npm:esbuild@0.24"
     ]
   }
