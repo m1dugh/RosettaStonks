@@ -1,7 +1,7 @@
 export const FoundationsTimeRequestKey = "foundations_time_request"
 export const FoundationsCourseRequestKey = "foundations_course_request"
 
-export const FluencyBuilderTimeRequestKey = "foundations_time_request"
+export const FluencyBuilderTimeRequestKey = "fluency_builder_time_request"
 
 export const BeforeSendHeadersParams = [
     "requestHeaders",
@@ -22,3 +22,7 @@ export const FluencyBuilderRequestFilter = {
         "https://gaia-server.rosettastone.com/*"
     ]
 }
+
+export const FoundationsKey = "foundations"
+export const FluencyBuilderKey = "fluency_builder"
+export const CurrentProductKey = "product"

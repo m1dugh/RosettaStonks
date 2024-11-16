@@ -4,7 +4,7 @@ import { denoPlugins } from "jsr:@luca/esbuild-deno-loader"
 
 const configs = {
     "frontend": {
-        entryPoints: ["./src/frontend/index.ts"],
+        entryPoints: ["./src/frontend/index.tsx"],
         outfile: "./dist/frontend.esm.js",
     },
     "worker": {
