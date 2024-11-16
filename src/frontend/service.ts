@@ -1,17 +1,41 @@
 import { CurrentProductKey, FoundationsKey, FoundationsTimeRequestKey } from "../lib/env.ts";
-import { Request } from "../worker/request.ts";
+import { copyRequest, Request } from "../lib/request.ts";
 
 export interface Service {
     addTime(time: Date): Promise<void>;
     validateLesson(): Promise<void>;
 }
 
+function getTabUrl(): Promise<URL> {
+    return new Promise((resolve, reject) => {
+        browser.tabs.query({
+            active: true,
+            currentWindow: true,
+        }).then(([tab]: {url: string | undefined}[]) => {
+            if (tab.url === undefined) {
+                reject()
+                return
+            }
+
+            const url = URL.parse(tab.url)
+            if (url === null)
+                reject()
+            else
+                resolve(url)
+
+        }).catch(reject)
+    })
+}
+
 export async function getService(): Promise<Service> {
-    const product = await browser.storage.session.get(CurrentProductKey)
+    const url = await getTabUrl()
 
-    if (product === FoundationsKey || true)
+    if (url.hostname === "totale.rosettastone.com") {
+        console.debug("Detected foundations product")
         return new FoundationsService()
+    }
 
+    console.debug("Failed to detect any product")
     throw new Error("Invalid product")
 }
 
@@ -22,15 +46,16 @@ export class FoundationsService implements Service {
     private maxTime = 1000 * 60 * 8;
 
     private createTimeRequest(base: Request, timeMs: number): Request {
-        const body = new DOMParser().parseFromString(base.body, "text/xml")
+        const res = copyRequest(base)
+        const body = new DOMParser().parseFromString(res.body, "text/xml")
         const rootTag = body.documentElement.tagName
 
         body.documentElement.getElementsByTagName("delta_time")[0].innerHTML = timeMs.toString();
         body.documentElement.getElementsByTagName("updated_at")[0].innerHTML = Date.now().toString()
 
         const editedBody = `<${rootTag}>${body.documentElement.innerHTML}</${rootTag}>`
-        base.body = editedBody
-        return base
+        res.body = editedBody
+        return res
     }
 
     private getTimeRequests(base: Request, time: Date): Request[] {
@@ -52,20 +77,19 @@ export class FoundationsService implements Service {
       if (req === undefined)
           throw Error("Could not add time")
 
-      console.log("found request", req)
-
       const requests = this.getTimeRequests(req, time)
+
       console.debug("sending requests", requests)
       const promises = requests.map(req => fetch(req.url, {
           method: req.method,
-          headers: req.requestHeaders as HeadersInit,
+          headers: req.headers,
           body: req.body,
       }))
 
       return await Promise.all(promises).then(() => {})
     }
 
-    async validateLesson(): Promise<void> {
-      
+    validateLesson(): Promise<void> {
+        throw new Error("TODO: not implemented")
     }
 }

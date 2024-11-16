@@ -1,29 +1,17 @@
 import { BeforeSendHeadersParams, FoundationsTimeRequestKey, FoundationsCourseRequestKey, FoundationsRequestFilter, BeforeSendRequestParams, FluencyBuilderRequestFilter, FluencyBuilderTimeRequestKey } from "../lib/env.ts"
 
-type Headers = Array<{name: string, value: string}> | undefined;
+import { Request } from "../lib/request.ts"
 
-function mergeHeaders(...headers: Headers[]): Headers {
-    let result: Headers = []
-    for (const h of headers) {
-        if (h !== undefined)
-            result = [...result, ...h]
-    }
-
-    return result
-}
-
-export interface Request {
+interface BeforeSendRequestRequest {
     requestId: string;
-    method: "GET" | "POST";
-    url: string;
-    requestHeaders: Headers;
-    body: string | null;
-    timestamp: Date;
+    requestHeaders: Array<{name: string, value: string}> | undefined;
+    requestBody: any;
+    timeStamp: number;
 }
 
 interface BeforeSendHeaderRequest {
     requestId: string;
-    requestHeaders: Headers;
+    requestHeaders: Array<{name: string, value: string}> | undefined;
 }
 
 function storeRequest(key: string): (req: Request) => void {
@@ -35,20 +23,26 @@ function storeRequest(key: string): (req: Request) => void {
     }
 }
 
-function requestFromObject(value: any): Request {
+function requestFromObject(req: BeforeSendRequestRequest): Request {
     let body: string | null = null;
-    if (value.requestBody != null) {
-        body = new TextDecoder().decode(value.requestBody.raw[0].bytes)
+    if (req.requestBody != null) {
+        body = new TextDecoder().decode(req.requestBody.raw[0].bytes)
     }
+    const headers = new Map<string, string>()
+
+    if (req.requestHeaders !== undefined)
+        req.requestHeaders.forEach(({name, value}) => headers.set(name, value))
+
     let timestamp: Date;
-    if (value.timeStamp != null)
-        timestamp = new Date(value.timeStamp)
+    if (req.timeStamp != null)
+        timestamp = new Date(req.timeStamp)
     else
         timestamp = new Date()
     return {
-        ...value,
+        ...(req as any),
         body,
         timestamp,
+        headers,
     }
 }
 
@@ -59,7 +53,7 @@ export interface RequestFilter {
 
 const foundationsTimeRequest: RequestFilter = {
     filter: (details: Request) => {
-        if (details.method !== "POST")
+        if (details.method !== "POST" || details.tabId === -1)
             return false
         const url = URL.parse(details.url)
         return url?.pathname?.endsWith("path_scores") || false
@@ -69,7 +63,7 @@ const foundationsTimeRequest: RequestFilter = {
 
 const foundationsCourseRequest: RequestFilter = {
     filter: (details: Request) => {
-        if (details.method !== "GET")
+        if (details.method !== "GET" || details.tabId === -1)
             return false
         const url = URL.parse(details.url)
         return url?.pathname?.endsWith("path_step_scores") || false
@@ -79,7 +73,7 @@ const foundationsCourseRequest: RequestFilter = {
 
 const fluencyBuilderTimeRequest: RequestFilter = {
     filter: (details: Request) => {
-        if (details.method !== "POST" || details.body === null)
+        if (details.method !== "POST" || details.body === null || details.tabId === -1)
             return false
         const url = URL.parse(details.url)
         if (url?.pathname !== "/graphql")
@@ -94,7 +88,7 @@ const fluencyBuilderTimeRequest: RequestFilter = {
 function setupRequestListeners(urlFilters: {urls: string[]}, filters: Array<RequestFilter>): void {
     const requestBuffers: Array<Request | null> = new Array(filters.length)
 
-    browser.webRequest.onBeforeRequest.addListener((details: any) => {
+    browser.webRequest.onBeforeRequest.addListener((details: BeforeSendRequestRequest) => {
         for (let i = 0; i < filters.length; i++) {
             const req = requestFromObject(details)
             if (filters[i].filter(req))
@@ -109,7 +103,9 @@ function setupRequestListeners(urlFilters: {urls: string[]}, filters: Array<Requ
             if (req?.requestId !== details.requestId)
                 continue
 
-            req.requestHeaders = mergeHeaders(req.requestHeaders, details.requestHeaders)
+            if (details.requestHeaders !== undefined)
+                details.requestHeaders.forEach(({name, value}) => req.headers.set(name, value))
+
             await filters[i].onMatched(req)
             requestBuffers[i] = null
         }
