@@ -3,9 +3,9 @@ import * as esbuild from "npm:esbuild"
 import { denoPlugins } from "jsr:@luca/esbuild-deno-loader"
 
 const configs = {
-    "front": {
+    "frontend": {
         entryPoints: ["./src/frontend/index.ts"],
-        outfile: "./dist/front.esm.js",
+        outfile: "./dist/frontend.esm.js",
     },
     "worker": {
         entryPoints: ["./src/worker/index.ts"],

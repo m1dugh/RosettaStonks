@@ -1,4 +1,4 @@
-import { BeforeSendHeadersParams, FoundationsTimeRequestKey, FoundationsCourseRequestKey, FoundationsRequestFilter, BeforeSendRequestParams, FluencyBuilderRequestFilter, FluencyBuilderTimeRequestKey } from "./env.ts"
+import { BeforeSendHeadersParams, FoundationsTimeRequestKey, FoundationsCourseRequestKey, FoundationsRequestFilter, BeforeSendRequestParams, FluencyBuilderRequestFilter, FluencyBuilderTimeRequestKey } from "../lib/env.ts"
 
 type Headers = Array<{name: string, value: string}> | undefined;
 
@@ -27,11 +27,11 @@ interface BeforeSendHeaderRequest {
 }
 
 function storeRequest(key: string): (req: Request) => void {
-    return (req: Request) => {
+    return async (req: Request) => {
         const slice: any = {}
         slice[key] = req;
         console.debug(`Storing request at "${key}"`, req)
-        browser.storage.session.set(slice)
+        await browser.storage.session.set(slice)
     }
 }
 
@@ -54,7 +54,7 @@ function requestFromObject(value: any): Request {
 
 export interface RequestFilter {
     filter: (details: Request) => boolean;
-    onMatched: (request: Request) => void;
+    onMatched: (request: Request) => Promise<void>;
 }
 
 const foundationsTimeRequest: RequestFilter = {
@@ -103,14 +103,14 @@ function setupRequestListeners(urlFilters: {urls: string[]}, filters: Array<Requ
     }, urlFilters
     , BeforeSendRequestParams)
 
-    browser.webRequest.onBeforeSendHeaders.addListener((details: BeforeSendHeaderRequest) => {
+    browser.webRequest.onBeforeSendHeaders.addListener(async (details: BeforeSendHeaderRequest) => {
         for (let i = 0; i < requestBuffers.length; i++) {
             const req = requestBuffers[i]
             if (req?.requestId !== details.requestId)
                 continue
 
             req.requestHeaders = mergeHeaders(req.requestHeaders, details.requestHeaders)
-            filters[i].onMatched(req)
+            await filters[i].onMatched(req)
             requestBuffers[i] = null
         }
     }, urlFilters

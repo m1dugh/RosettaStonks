@@ -6,6 +6,11 @@
     "background": {
         "scripts": ["./dist/worker.esm.js"]
     },
+    "action": {
+        "default_popup": "/static/index.html",
+        "default_icon": "/static/rosettastonks.png",
+		"default_title": "rosetta stonks"
+    },
 	"permissions": [
 		"storage",
 		"webRequest",
