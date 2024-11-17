@@ -26,6 +26,8 @@
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             deno
+            gnumake
+            zip
           ];
         };
 
