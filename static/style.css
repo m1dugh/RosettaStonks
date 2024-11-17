@@ -1,0 +1,26 @@
+html {
+    background-color: rgb(30, 30, 30);
+}
+
+#root {
+    width: 250px;
+    height: 300px;
+}
+
+.error-banner {
+    position: fixed;
+    margin: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0px;
+    background-color: red;
+    color: white;
+    transition: height 0.2s linear;
+    overflow: hidden;
+}
+
+.error-banner.active {
+    padding: 10px;
+    height: 50px;
+}
