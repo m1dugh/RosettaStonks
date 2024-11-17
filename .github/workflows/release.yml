@@ -6,62 +6,100 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
-  check_version:
-    name: Check version
+  test_chrome:
+    name: Test chrome
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install jq
+      - uses: actions/checkout@v4
+      - name: Install dependencies
         run: |
           sudo apt update -y
           sudo apt install -y jq
-      - name: Check npm version
-        shell: bash
+      - name: Check manifest version
         run: |
-          tag_version=$(echo $GITHUB_REF_NAME | grep -Eo "[0-9]+\.[0-9]+\.[0-9]+.*")
-          npm_version=$(jq -r '.version' ./manifest.json)
-          echo "$tag_version" "$npm_version"
-          [ "$tag_version" = "$npm_version" ] || true
-  build:
-    needs:
-      - check_version
+          version="$(jq -r '.version' chrome/manifest.json)"
+          echo "$version" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'
+  test_mozilla:
+    name: Test mozilla
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y jq
+      - name: Check manifest version
+        run: |
+          version="$(jq -r '.version' mozilla/manifest.json)"
+          echo "$version" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'
+  build_mozilla:
+    name: Build mozilla
+    needs:
+      - test_mozilla
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
         with:
-          node-version: '18'
+          deno-version: v2.x
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y zip build-essential
+
       - name: Build
         run: |
-          npm ci
-          npm run build
-      - name: Save dist file
-        uses: actions/upload-artifact@v3
+          make mozilla
+
+      - name: Save xpi file
+        uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: ./dist
+          name: mozilla_release
+          path: ./rosettastonks.xpi
+
+  build_chrome:
+    name: Build chrome
+    needs:
+      - test_chrome
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y build-essential
+
+      - name: Build
+        run: |
+          make chrome
+          tar cvzf rosettastonks-chrome.tar.gz dist/ static/ manifest.json
+
+      - name: Save xpi file
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome_release
+          path: ./rosettastonks-chrome.tar.gz
 
   release:
     needs:
-      - build
+      - build_chrome
+      - build_mozilla
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Download build
-        uses: actions/download-artifact@v3
+      - name: Download chrome release
+        uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: ./dist
-      - name: Create release dist
-        run: |
-          mkdir rosettastonks
-          mv ./dist/ ./package.json ./manifest.json ./static ./rosettastonks
-          tar -cvf ./rosettastonks.tar.gz ./rosettastonks
+          name: chrome_release
+      - name: Download mozilla release
+        uses: actions/download-artifact@v4
+        with:
+          name: mozilla_release
       - name: Create github release
-        id: create_release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ./rosettastonks.tar.gz
-
+          artifacts: "rosettastonks.xpi,rosettastonks-chrome.tar.gz"

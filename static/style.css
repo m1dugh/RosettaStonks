@@ -1,0 +1,83 @@
+html {
+    background-color: rgb(30, 30, 30);
+}
+
+#root {
+    width: 320px;
+    height: 400px;
+    display: grid;
+    grid-template:
+        "err err err err" 1fr
+        "top top top top" 3fr
+        "tim tim tim tim" 2fr
+        "val val cle cle" 2fr
+        "ext ext ext ext" 40px
+        / 1fr 1fr 1fr 1fr
+    ;
+}
+
+.error-banner {
+    grid-area: err;
+    height: 0px;
+    background-color: red;
+    color: white;
+    transition: height 0.2s linear;
+    overflow: hidden;
+}
+
+.error-banner.active {
+    padding: 5px;
+    height: 40px;
+}
+
+.top {
+    grid-area: top;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.time-form {
+    grid-area: tim;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.validate-form {
+    grid-area: val;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.validate-form button {
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+}
+
+.clear-cache {
+    grid-area: cle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-cache button {
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+}
+
+p.warning-form {
+    color: white;
+    text-align: center;
+    font-style: italic;
+}
+
+div.extra-bar {
+    grid-area: ext;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

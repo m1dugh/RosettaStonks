@@ -1,45 +1,77 @@
-# RosettaStonks
+# Rosetta Stonks
 
-------
+## How to use
 
-## What is it ?
-Rosetta Stonks is a chrome extension allowing you enhance your rosetta stone statistics.
-> **RosettaStonks, and your rosetta stone goes Stonks !**
+### Chrome based browsers
+
+To use the extension in a chrome-based browser, you need to:
+- download the file `rosettastonks-chrome.tar.gz` from the latest release on
+  your machine.
+- create a folder named `rosettastonks` somewhere on your machine to store the
+  extension
+- run the following command in the `rosettastonks` folder.
+```bash
+$ tar xvzf /path/to/rosettastonks-chrome.tar.gz
+```
+
+In your browser:
+- go to `chrome://extensions`
+- check the `Developer mode` toggle
+- click `Load unpacked`
+- Select your `rosettastonks` folder
+
+### Firefox based browsers
+
+- download the file `rosettastonks.xpi` from the latest release.
+- go to `about:addons` in your browser
+- click the settings button and go to `Debug addons`.
+- click `Load Temporary Add-On`
+- select the `rosettastonks.xpi` file in the file picker.
+
+*Warning: This method only installs the extension temporarily, meaning that if
+you close your browser, the addon will be uninstalled. This is due to firefox
+policies not allowing unverified extensions to be used.*
 
 
-## How to install ?
-1. Downloads the `rosettastonks.tar.gz` folder from the latest release.
-2. in the extension menu (`<browser_name>://extensions`, e.g. `chrome://extensions`)
-3. activate developper mode 
-![](images/readme/developer_mode.png)
-4. unzip the download file
-5. click load unpacked and select the root folder of the extension
-![](images/readme/unpacked.png)
-## How to use ?
+## Building the application
 
-Download the chrome extension, connect yourself to your 
-`rosetta stone` account and complete any path question. 
+### Building the worker
 
-It now works with both `Foundations` and `Fluency Builder` rosetta stone
-products as of version `v2.0.0`.
+The worker can be packaged using the following command
+```
+$ deno task build:worker
+```
 
-> the extension should show `status: ready` top left
+Which creates the packaged file `/dist/worker.esm.js` which is the packaged
+file for the worker.
 
-enter the number of minutes you want to add to your current time
-and click `add time`
+### Building the frontend
 
-> *Note: as said on `rosetta stone` statistics page, time can take up to 24h to update.*
+The worker can be packaged using the following command
+```
+$ deno task build:front
+```
 
-### Validating lesson
+Which creates the packaged file `/dist/frontend.esm.js` which is the packaged
+file for the frontend.
 
-The validate lesson feature was released starting version 2.1.0-BETA for
-foundations product only, and is still in BETA stage.
-This feature requires to click first on all the circles (see picture)
-in order to validate them.
+## Packaging the extension
 
-![](images/readme/validate_protocol1.png)
+### Chrome
 
-Once clicked, the exercices are generated, you can the click on the
-validate lesson button.
+To package the extension for chrome, the following command can be ran:
 
-If it doesn't work, go back to home page, and click again on the lesson.
+```
+$ make chrome
+```
+
+### Firefox
+
+To package the extension for firefox, the following command can be ran:
+
+```
+$ make firefox
+```
+
+Which will produce `rosettastonks.xpi`, the file for the extension that can be
+loaded in firefox.
