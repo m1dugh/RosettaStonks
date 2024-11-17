@@ -18,8 +18,15 @@
 		"scripting"
 	],
 	"icons": {
-		"128": "/static/rosettastonks.png"
+		"48": "/static/rosettastonks-48.png",
+		"512": "/static/rosettastonks-512.png"
 	},
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "rosettastonks@midugh.fr",
+            "strict_min_version": "109.0"
+        }
+    },
 	"host_permissions": [
 		"*://totale.rosettastone.com/",
 		"*://tracking.rosettastone.com/",

@@ -18,7 +18,8 @@
 		"scripting"
 	],
 	"icons": {
-		"128": "/static/rosettastonks.png"
+		"48": "/static/rosettastonks-48.png",
+		"512": "/static/rosettastonks-512.png"
 	},
 	"host_permissions": [
 		"*://totale.rosettastone.com/",
