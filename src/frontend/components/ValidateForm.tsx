@@ -1,7 +1,31 @@
-import React, {  JSX } from "react"
+import React, {  JSX, useState } from "react"
+import { Service } from "../service.ts";
 
-export default function ValidateForm(): JSX.Element {
+interface IProps {
+    service: Service | null;
+    onError: (e: Error) => void;
+}
+
+export default function ValidateForm({service, onError}: IProps): JSX.Element {
+
+    const [enabled, setEnabled] = useState<boolean>(true);
+
+    const onClick = async () => {
+        if (service === null) {
+            onError(new Error("No service found"))
+            return
+        }
+        console.debug("validating lesson")
+        setEnabled(false)
+        try {
+            await service.validateLesson()
+        } catch (e) {
+            onError(e as Error)
+        } finally {
+            setEnabled(true)
+        }
+    }
     return (<>
-        <button onClick={() => console.info("validating lesson")}>validate lesson</button>
+        <button onClick={onClick} disabled={!enabled}>validate lesson</button>
     </>)
 }

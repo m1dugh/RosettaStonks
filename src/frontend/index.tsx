@@ -12,8 +12,8 @@ function App(): JSX.Element {
     }, [])
 
     return (<>
-        <TimeForm service={service} />
-        <ValidateForm />
+        <TimeForm service={service} onError={console.error} />
+        <ValidateForm service={service} onError={console.error} />
     </>)
 }
 

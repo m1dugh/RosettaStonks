@@ -1,6 +1,6 @@
-import { CurrentProductKey, FluencyBuilderTimeRequestKey, FoundationsKey, FoundationsTimeRequestKey } from "../lib/env.ts";
+import { CurrentProductKey, FluencyBuilderTimeRequestKey, FoundationsCourseRequestKey, FoundationsKey, FoundationsTimeRequestKey } from "../lib/env.ts";
 import { copyRequest, Request } from "../lib/request.ts";
-import * as uuid from "jsr:@st/uuid"
+import * as uuid from "jsr:@std/uuid"
 
 export interface Service {
     addTime(time: Date): Promise<void>;
@@ -119,7 +119,57 @@ export class FoundationsService implements Service {
       return await Promise.all(promises).then(() => {})
     }
 
-    validateLesson(): Promise<void> {
-        throw new Error("TODO: not implemented")
+    private async generateValidateRequests(req: Request): Promise<Request[]> {
+        const res = await fetch(req.url, {
+            method: "GET",
+            headers: req.headers,
+        })
+
+        const body = new DOMParser().parseFromString(await res.text(), "text/xml")
+        const requests: Request[] = []
+
+        const serializer = new XMLSerializer()
+
+        for (const el of body.querySelectorAll("path_step_score")) {
+            const challengeNumber = el.querySelector("number_of_challenges").innerHTML
+            const correct = el.querySelector("score_correct")
+            if (correct.innerHTML === challengeNumber)
+                continue
+
+            correct.innerHTML = challengeNumber
+
+            const pathStep = el.querySelector("path_step_media_id").innerHTML
+            if (!pathStep)
+                continue
+
+            const url = req.url + "&" + new URLSearchParams({
+                _method: "put",
+                path_step_media_id: pathStep,
+            })
+
+            const bodyString: string = serializer.serializeToString(el)
+            requests.push({
+                url,
+                method: "POST",
+                headers: req.headers,
+                body: bodyString,
+            })
+        }
+
+        return requests
+    }
+
+    async validateLesson(): Promise<void> {
+      const req = (await browser.storage.session.get(FoundationsCourseRequestKey))[FoundationsCourseRequestKey]
+      if (req === undefined)
+          throw Error("Could not add time")
+
+      const requests = await this.generateValidateRequests(req)
+
+      await Promise.all(requests.map(({url, body, headers}) => fetch(url, {
+          method: "POST",
+          body,
+          headers
+      })))
     }
 }

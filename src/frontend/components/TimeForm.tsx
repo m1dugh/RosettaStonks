@@ -3,9 +3,10 @@ import { Service } from "../service.ts";
 
 interface IProps {
     service: Service | null;
+    onError: (e: Error) => void;
 }
 
-export default function TimeForm({service}: IProps): Promise<JSX.Element> {
+export default function TimeForm({service, onError}: IProps): Promise<JSX.Element> {
 
     const [time, setTime] = useState<number>(0)
     const [content, setContent] = useState<string>("submit")
@@ -13,7 +14,7 @@ export default function TimeForm({service}: IProps): Promise<JSX.Element> {
     const onSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
         e.preventDefault()
         if (service === null) {
-            console.error("Invalid service")
+            onError(new Error("Invalid service"))
             return
         }
         console.info("Adding", time, "minutes")
@@ -22,7 +23,7 @@ export default function TimeForm({service}: IProps): Promise<JSX.Element> {
             await service.addTime(new Date(time * 60 * 1000))
             setTime(0)
         } catch(e) {
-            console.error(e.message)
+            onError(e as Error)
         } finally {
             setContent("submit")
         }
