@@ -103,7 +103,7 @@ export class FoundationsService implements Service {
     }
 
     async addTime(time: Date): Promise<void> {
-      const req = (await browser.storage.session.get(FoundationsTimeRequestKey))[FoundationsTimeRequestKey]
+      const req: Request = (await browser.storage.session.get(FoundationsTimeRequestKey))[FoundationsTimeRequestKey]
       if (req === undefined)
           throw Error("Could not add time")
 

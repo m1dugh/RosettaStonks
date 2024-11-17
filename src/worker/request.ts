@@ -4,14 +4,25 @@ import { Request } from "../lib/request.ts"
 
 interface BeforeSendRequestRequest {
     requestId: string;
+
+    // Headers for firefox
     requestHeaders: Array<{name: string, value: string}> | undefined;
+
+    // Headers for chrome
+    headers: any | undefined;
+
     requestBody: any;
     timeStamp: number;
 }
 
 interface BeforeSendHeaderRequest {
     requestId: string;
+
+    // Headers for firefox
     requestHeaders: Array<{name: string, value: string}> | undefined;
+
+    // Headers for chrome
+    headers: any | undefined;
 }
 
 function storeRequest(key: string): (req: Request) => void {
@@ -28,10 +39,14 @@ function requestFromObject(req: BeforeSendRequestRequest): Request {
     if (req.requestBody != null) {
         body = new TextDecoder().decode(req.requestBody.raw[0].bytes)
     }
-    const headers = new Map<string, string>()
+    const headers: any = {};
 
     if (req.requestHeaders !== undefined)
-        req.requestHeaders.forEach(({name, value}) => headers.set(name, value))
+        req.requestHeaders
+        .forEach(({name, value}) => headers[name] = value)
+
+    else if (req.headers !== undefined)
+        Object.entries(req.headers).forEach(([name, value]) => headers[name] = value)
 
     let timestamp: Date;
     if (req.timeStamp != null)
@@ -104,7 +119,10 @@ function setupRequestListeners(urlFilters: {urls: string[]}, filters: Array<Requ
                 continue
 
             if (details.requestHeaders !== undefined)
-                details.requestHeaders.forEach(({name, value}) => req.headers.set(name, value))
+                details.requestHeaders.forEach(({name, value}) => req.headers[name] = value)
+            else if (details.headers !== undefined)
+                Object.entries(details.headers)
+                .forEach(([name, value]) => req.headers[name] = value)
 
             await filters[i].onMatched(req)
             requestBuffers[i] = null
