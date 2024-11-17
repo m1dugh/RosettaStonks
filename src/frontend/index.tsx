@@ -13,6 +13,10 @@ function App(): JSX.Element {
         getService().then(setService).catch((e) => console.error(e))
     }, [])
 
+    const onClearCache = async () => {
+        await browser.storage.session.clear()
+    }
+
     return (<>
         <div className="top">
             <h1>Rosetta stonks</h1>
@@ -21,7 +25,7 @@ function App(): JSX.Element {
         <TimeForm service={service} onError={setError} />
         <ValidateForm service={service} onError={setError} />
         <div className="clear-cache">
-            <button disabled={true}>clear cache</button>
+            <button disabled={true} onClick={onClearCache}>clear cache</button>
         </div>
     </>)
 }

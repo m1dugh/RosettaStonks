@@ -2,9 +2,20 @@ import { FluencyBuilderTimeRequestKey, FoundationsCourseRequestKey, FoundationsT
 import { copyRequest, Request } from "../lib/request.ts";
 import * as uuid from "jsr:@std/uuid"
 
+export enum Feature {
+    AddTime,
+    ValidateLesson,
+}
+
 export interface Service {
+    isFeatureReady(feature: Feature): Promise<boolean>;
     addTime(time: Date): Promise<void>;
     validateLesson(): Promise<void>;
+}
+
+async function getRequest(key: string): Promise<Request | undefined> {
+    const req: Request | undefined = (await browser.storage.session.get(key))[key]
+    return req
 }
 
 function getTabUrl(): Promise<URL> {
@@ -44,8 +55,18 @@ export async function getService(): Promise<Service> {
 }
 
 export class FluencyBuilderService implements Service {
+
+    async isFeatureReady(feature: Feature): Promise<boolean> {
+      if (feature === Feature.ValidateLesson) {
+          return false
+      } else if (feature === Feature.AddTime) {
+          return await getRequest(FluencyBuilderTimeRequestKey) !== undefined
+      }
+      return false
+    }
+
     async addTime(time: Date): Promise<void> {
-      const req = (await browser.storage.session.get(FluencyBuilderTimeRequestKey))[FluencyBuilderTimeRequestKey]
+      const req = await getRequest(FluencyBuilderTimeRequestKey)
       if (req === undefined || req.body === null)
           throw Error("Could not add time")
 
@@ -103,7 +124,7 @@ export class FoundationsService implements Service {
     }
 
     async addTime(time: Date): Promise<void> {
-      const req: Request = (await browser.storage.session.get(FoundationsTimeRequestKey))[FoundationsTimeRequestKey]
+      const req = await getRequest(FoundationsTimeRequestKey)
       if (req === undefined)
           throw Error("Could not add time")
 
@@ -159,8 +180,17 @@ export class FoundationsService implements Service {
         return requests
     }
 
+    async isFeatureReady(feature: Feature): Promise<boolean> {
+      if (feature === Feature.ValidateLesson) {
+          return await getRequest(FoundationsCourseRequestKey) !== undefined
+      } else if (feature === Feature.AddTime) {
+          return await getRequest(FoundationsTimeRequestKey) !== undefined
+      }
+      return false
+    }
+
     async validateLesson(): Promise<void> {
-      const req = (await browser.storage.session.get(FoundationsCourseRequestKey))[FoundationsCourseRequestKey]
+      const req = await getRequest(FoundationsCourseRequestKey)
       if (req === undefined)
           throw Error("Could not add time")
 
