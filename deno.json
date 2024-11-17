@@ -5,6 +5,7 @@
     "esbuild": "npm:esbuild@^0.24.0",
     "react": "https://esm.sh/react@18.2.0",
     "react-dom/client": "https://esm.sh/react-dom@18.2.0/client/",
+    "react-github-btn": "npm:react-github-btn@^1.4.0",
     "react-github-button": "npm:react-github-button@^0.1.11"
   },
   "tasks": {

@@ -10,6 +10,7 @@
     "jsr:@std/uuid@^1.0.4": "1.0.4",
     "npm:esbuild@*": "0.24.0",
     "npm:esbuild@0.24": "0.24.0",
+    "npm:react-github-btn@^1.4.0": "1.4.0_react@18.3.1",
     "npm:react-github-button@~0.1.11": "0.1.11"
   },
   "jsr": {
@@ -143,6 +144,9 @@
         "@esbuild/win32-x64"
       ]
     },
+    "github-buttons@2.29.1": {
+      "integrity": "sha512-TV3YgAKda5hPz75n7QXmGCsSzgVya1vvmBieebg3EB5ScmashTZ0FldViG1aU2d4V5rcAGrtQ7k5uAaCo0A4PA=="
+    },
     "js-tokens@4.0.0": {
       "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
     },
@@ -163,6 +167,13 @@
         "react-is"
       ]
     },
+    "react-github-btn@1.4.0_react@18.3.1": {
+      "integrity": "sha512-lV4FYClAfjWnBfv0iNlJUGhamDgIq6TayD0kPZED6VzHWdpcHmPfsYOZ/CFwLfPv4Zp+F4m8QKTj0oy2HjiGXg==",
+      "dependencies": [
+        "github-buttons",
+        "react"
+      ]
+    },
     "react-github-button@0.1.11": {
       "integrity": "sha512-KL/kieQiR5DXd1RxWMegr4Igyz9+Lm6ZVwjpN5rQyttz/sdEq8DF1R/vzLl2f58nChJe0sKE3U3A7QRK+Zb01w==",
       "dependencies": [
@@ -171,7 +182,17 @@
     },
     "react-is@16.13.1": {
       "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
+    },
+    "react@18.3.1": {
+      "integrity": "sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==",
+      "dependencies": [
+        "loose-envify"
+      ]
     }
+  },
+  "redirects": {
+    "https://esm.sh/v128/@types/react@~18.2/index.d.ts": "https://esm.sh/v128/@types/react@18.2.38/index.d.ts",
+    "https://esm.sh/v135/@types/react-dom@~18.2/client~.d.ts": "https://esm.sh/v135/@types/react-dom@18.2.25/client~.d.ts"
   },
   "remote": {
     "https://esm.sh/react-dom@18.2.0/client/": "391c0483ce063105b7d0422c653da70d52ac5f4efa02b0873ce8b70c4dc9ff61",
@@ -186,6 +207,7 @@
       "jsr:@luca/esbuild-deno-loader@0.11",
       "jsr:@std/uuid@^1.0.4",
       "npm:esbuild@0.24",
+      "npm:react-github-btn@^1.4.0",
       "npm:react-github-button@~0.1.11"
     ]
   }
