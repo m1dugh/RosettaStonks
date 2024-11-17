@@ -4,6 +4,9 @@
 
 ### Chrome based browsers
 
+
+1. Using github release
+
 To use the extension in a chrome-based browser, you need to:
 - download the file `rosettastonks-chrome.tar.gz` from the latest release on
   your machine.
@@ -14,6 +17,19 @@ To use the extension in a chrome-based browser, you need to:
 $ tar xvzf /path/to/rosettastonks-chrome.tar.gz
 ```
 
+2. Using nix package manager
+
+Instead of the previous commands, if you are on a nix system **supporting
+flakes**, you can run the following commands, which will give your the path to
+the `rosettastonks` folder (named `rosettastonks-chrome`)
+
+```bash
+$ nix build --out-link "" --print-out-paths github:m1dugh/RosettaStonks#chrome
+```
+
+**This part if for all users indepently of whether you are using github method
+or nix method.**
+
 In your browser:
 - go to `chrome://extensions`
 - check the `Developer mode` toggle
@@ -23,10 +39,16 @@ In your browser:
 ### Firefox based browsers
 
 - download the file `rosettastonks.xpi` from the latest release.
+- alternatively, if using nix package manager with flake support, your can run
+  the following command.
+```bash
+$ nix build --out-link "" --print-out-paths github:m1dugh/RosettaStonks#mozilla
+```
 - go to `about:addons` in your browser
 - click the settings button and go to `Debug addons`.
 - click `Load Temporary Add-On`
-- select the `rosettastonks.xpi` file in the file picker.
+- select the `rosettastonks.xpi` file in the file picker, or the path the nix
+  command gave you.
 
 *Warning: This method only installs the extension temporarily, meaning that if
 you close your browser, the addon will be uninstalled. This is due to firefox
