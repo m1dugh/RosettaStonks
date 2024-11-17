@@ -10,7 +10,7 @@ function App(): JSX.Element {
     const [error, setError] = useState<Error | null>(null)
 
     useEffect(() => {
-        getService().then(setService).catch((e) => console.error(e))
+        getService().then(setService).catch(setError)
     }, [])
 
     const onClearCache = async () => {

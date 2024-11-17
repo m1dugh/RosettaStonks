@@ -8,7 +8,7 @@
     },
     "action": {
         "default_popup": "/static/index.html",
-        "default_icon": "/static/rosettastonks.png",
+        "default_icon": "/static/rosettastonks-48.png",
 		"default_title": "rosetta stonks"
     },
 	"permissions": [

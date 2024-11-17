@@ -8,7 +8,7 @@
     },
     "action": {
         "default_popup": "/static/index.html",
-        "default_icon": "/static/rosettastonks.png",
+        "default_icon": "/static/rosettastonks-48.png",
 		"default_title": "rosetta stonks"
     },
 	"permissions": [
@@ -19,7 +19,6 @@
 	],
 	"icons": {
 		"48": "/static/rosettastonks-48.png",
-		"128": "/static/rosettastonks-512.png",
 		"512": "/static/rosettastonks-512.png"
 	},
     "browser_specific_settings": {
