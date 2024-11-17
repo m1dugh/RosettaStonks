@@ -6,12 +6,12 @@ all: mozilla
 
 mozilla: rosettastonks.xpi
 
-rosettastonks.xpi: frontend worker static/*
+rosettastonks.xpi: frontend worker static/* ./mozilla/manifest.json
 	cp ./mozilla/manifest.json .
-	zip -r $@ manifest.json dist/ static/
+	zip -FS -r $@ manifest.json dist/ static/
 
 
-chrome: front worker
+chrome: front worker ./chrome/manifest.json
 	cp ./chrome/manifest.json .
 
 frontend: ./dist/frontend.esm.js
