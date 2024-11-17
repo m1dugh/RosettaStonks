@@ -5,7 +5,8 @@
 ### Chrome based browsers
 
 To use the extension in a chrome-based browser, you need to:
-- download the file `rosettastonks-chrome.tar.gz` from the latest release on your machine.
+- download the file `rosettastonks-chrome.tar.gz` from the latest release on
+  your machine.
 - create a folder named `rosettastonks` somewhere on your machine to store the
   extension
 - run the following command in the `rosettastonks` folder.
@@ -20,6 +21,16 @@ In your browser:
 - Select your `rosettastonks` folder
 
 ### Firefox based browsers
+
+- download the file `rosettastonks.xpi` from the latest release.
+- go to `about:addons` in your browser
+- click the settings button and go to `Debug addons`.
+- click `Load Temporary Add-On`
+- select the `rosettastonks.xpi` file in the file picker.
+
+*Warning: This method only installs the extension temporarily, meaning that if
+you close your browser, the addon will be uninstalled. This is due to firefox
+policies not allowing unverified extensions to be used.*
 
 
 ## Building the application
