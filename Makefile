@@ -11,10 +11,12 @@ rosettastonks.xpi: frontend worker static/* ./mozilla/manifest.json
 	zip -FS -r $@ manifest.json dist/ static/
 
 
-chrome: front worker ./chrome/manifest.json
+chrome: frontend worker ./chrome/manifest.json
 	cp ./chrome/manifest.json .
+	sed -i 's/\<browser\>/chrome/g' dist/*.esm.js
 
 frontend: ./dist/frontend.esm.js
+
 worker: ./dist/worker.esm.js
 
 ./dist/frontend.esm.js: src/frontend/* src/lib/*
