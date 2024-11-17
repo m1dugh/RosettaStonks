@@ -30,11 +30,11 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
     }
 
     return (
-        <>
+        <div className="time-form">
             <form onSubmit={onSubmit}>
                 <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time}/>
                 <button type="submit" disabled={time <= 0}>{content}</button>
             </form>
-        </>
+        </div>
     )
 }

@@ -25,7 +25,7 @@ export default function ValidateForm({service, onError}: IProps): JSX.Element {
             setEnabled(true)
         }
     }
-    return (<>
+    return (<div className="validate-form">
         <button onClick={onClick} disabled={!enabled}>validate lesson</button>
-    </>)
+    </div>)
 }

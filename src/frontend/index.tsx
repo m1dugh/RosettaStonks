@@ -14,9 +14,15 @@ function App(): JSX.Element {
     }, [])
 
     return (<>
+        <div className="top">
+            <h1>Rosetta stonks</h1>
+        </div>
         <ErrorBanner error={error} />
         <TimeForm service={service} onError={setError} />
         <ValidateForm service={service} onError={setError} />
+        <div className="clear-cache">
+            <button disabled={true}>clear cache</button>
+        </div>
     </>)
 }
 
