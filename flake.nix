@@ -115,6 +115,10 @@
               cp -R dist/ static/ manifest.json $out/
               runHook postInstall
             '';
+            postInstall = ''
+              substituteInPlace $out/dist/*.esm.js \
+                --replace "browser" "chrome"
+            '';
 
           };
         };
