@@ -11,6 +11,8 @@ html {
         "top top top top" 3fr
         "tim tim tim tim" 2fr
         "val val cle cle" 2fr
+        "ext ext ext ext" 40px
+        / 1fr 1fr 1fr 1fr
     ;
 }
 
@@ -65,4 +67,17 @@ html {
 .clear-cache button {
     padding: 10px 20px 10px 20px;
     text-align: center;
+}
+
+p.warning-form {
+    color: white;
+    text-align: center;
+    font-style: italic;
+}
+
+div.extra-bar {
+    grid-area: ext;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }

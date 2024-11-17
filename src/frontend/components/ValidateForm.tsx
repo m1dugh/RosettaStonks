@@ -39,7 +39,7 @@ export default function ValidateForm({service, onError}: IProps): JSX.Element {
     return (<div className="validate-form">
         {
             available ? ( <button onClick={onClick} disabled={!enabled}>{content}</button>)
-            : (<MissingFeatureBanner />)
+            : (<MissingFeatureBanner message="validate lesson"/>)
         }
         
     </div>)

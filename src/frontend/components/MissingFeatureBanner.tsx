@@ -1,5 +1,9 @@
 import React from "react"
 
-export default function () {
-    return (<p className="warning-form">Do at least one exercise in order to add time</p>)
+interface IProps {
+    message: string;
+}
+
+export default function ({message}: IProps) {
+    return (<p className="warning-form">Do at least one exercise in order to {message}</p>)
 }

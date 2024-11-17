@@ -9,7 +9,8 @@
     "jsr:@std/path@^1.0.6": "1.0.8",
     "jsr:@std/uuid@^1.0.4": "1.0.4",
     "npm:esbuild@*": "0.24.0",
-    "npm:esbuild@0.24": "0.24.0"
+    "npm:esbuild@0.24": "0.24.0",
+    "npm:react-github-button@~0.1.11": "0.1.11"
   },
   "jsr": {
     "@luca/esbuild-deno-loader@0.11.0": {
@@ -141,6 +142,35 @@
         "@esbuild/win32-ia32",
         "@esbuild/win32-x64"
       ]
+    },
+    "js-tokens@4.0.0": {
+      "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="
+    },
+    "loose-envify@1.4.0": {
+      "integrity": "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==",
+      "dependencies": [
+        "js-tokens"
+      ]
+    },
+    "object-assign@4.1.1": {
+      "integrity": "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="
+    },
+    "prop-types@15.8.1": {
+      "integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",
+      "dependencies": [
+        "loose-envify",
+        "object-assign",
+        "react-is"
+      ]
+    },
+    "react-github-button@0.1.11": {
+      "integrity": "sha512-KL/kieQiR5DXd1RxWMegr4Igyz9+Lm6ZVwjpN5rQyttz/sdEq8DF1R/vzLl2f58nChJe0sKE3U3A7QRK+Zb01w==",
+      "dependencies": [
+        "prop-types"
+      ]
+    },
+    "react-is@16.13.1": {
+      "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
     }
   },
   "remote": {
@@ -155,7 +185,8 @@
     "dependencies": [
       "jsr:@luca/esbuild-deno-loader@0.11",
       "jsr:@std/uuid@^1.0.4",
-      "npm:esbuild@0.24"
+      "npm:esbuild@0.24",
+      "npm:react-github-button@~0.1.11"
     ]
   }
 }

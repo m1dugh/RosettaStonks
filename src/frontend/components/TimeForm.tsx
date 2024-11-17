@@ -7,10 +7,12 @@ interface IProps {
     onError: (e: Error) => void;
 }
 
+const DefaultText = "add minutes"
+
 export default function TimeForm({service, onError}: IProps): Promise<JSX.Element> {
 
     const [time, setTime] = useState<number>(0)
-    const [content, setContent] = useState<string>("submit")
+    const [content, setContent] = useState<string>(DefaultText)
     const [available, setAvailable] = useState<boolean>(false);
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
         } catch(e) {
             onError(e as Error)
         } finally {
-            setContent("submit")
+            setContent(DefaultText)
         }
     }
 
@@ -44,7 +46,7 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
                  <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time} disabled={!available}/>
                  <button type="submit" disabled={time <= 0}>{content}</button>
              </form>
-            ) : (<MissingFeatureBanner />)
+            ) : (<MissingFeatureBanner message="add time"/>)
             
         }
         </div>
