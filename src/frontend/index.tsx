@@ -25,7 +25,7 @@ function App(): JSX.Element {
         <TimeForm service={service} onError={setError} />
         <ValidateForm service={service} onError={setError} />
         <div className="clear-cache">
-            <button disabled={true} onClick={onClearCache}>clear cache</button>
+            <button onClick={onClearCache}>clear cache</button>
         </div>
     </>)
 }

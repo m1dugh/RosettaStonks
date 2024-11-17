@@ -1,5 +1,6 @@
 import React, { useState, JSX, useEffect } from "react"
 import { Feature, Service } from "../service.ts";
+import MissingFeatureBanner from "./MissingFeatureBanner.tsx";
 
 interface IProps {
     service: Service | null;
@@ -35,15 +36,17 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
         }
     }
 
-    const disabled = time <= 0
-        || !available
-
     return (
         <div className="time-form">
-            <form onSubmit={onSubmit}>
-                <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time} disabled={!available}/>
-                <button type="submit" disabled={disabled}>{content}</button>
-            </form>
+        {
+        available ? (
+             <form onSubmit={onSubmit}>
+                 <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time} disabled={!available}/>
+                 <button type="submit" disabled={time <= 0}>{content}</button>
+             </form>
+            ) : (<MissingFeatureBanner />)
+            
+        }
         </div>
     )
 }
