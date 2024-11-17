@@ -1,5 +1,5 @@
-import React, { useState, JSX } from "react"
-import { Service } from "../service.ts";
+import React, { useState, JSX, useEffect } from "react"
+import { Feature, Service } from "../service.ts";
 
 interface IProps {
     service: Service | null;
@@ -10,6 +10,12 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
 
     const [time, setTime] = useState<number>(0)
     const [content, setContent] = useState<string>("submit")
+    const [available, setAvailable] = useState<boolean>(false);
+
+    useEffect(() => {
+        service?.isFeatureReady(Feature.AddTime)
+            .then(setAvailable)
+    }, [service])
 
     const onSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -29,11 +35,14 @@ export default function TimeForm({service, onError}: IProps): Promise<JSX.Elemen
         }
     }
 
+    const disabled = time <= 0
+        || !available
+
     return (
         <div className="time-form">
             <form onSubmit={onSubmit}>
-                <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time}/>
-                <button type="submit" disabled={time <= 0}>{content}</button>
+                <input type="number" min="0" placeholder="time to add (minutes)" onChange={(e) => setTime(e.target.value || 0)} value={time} disabled={!available}/>
+                <button type="submit" disabled={disabled}>{content}</button>
             </form>
         </div>
     )

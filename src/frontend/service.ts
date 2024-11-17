@@ -1,6 +1,7 @@
 import { FluencyBuilderTimeRequestKey, FoundationsCourseRequestKey, FoundationsTimeRequestKey } from "../lib/env.ts";
 import { copyRequest, Request } from "../lib/request.ts";
 import * as uuid from "jsr:@std/uuid"
+import { getProduct, getTabUrl, Product } from "../lib/product.ts";
 
 export enum Feature {
     AddTime,
@@ -18,40 +19,17 @@ async function getRequest(key: string): Promise<Request | undefined> {
     return req
 }
 
-function getTabUrl(): Promise<URL> {
-    return new Promise((resolve, reject) => {
-        browser.tabs.query({
-            active: true,
-            currentWindow: true,
-        }).then(([tab]: {url: string | undefined}[]) => {
-            if (tab.url === undefined) {
-                reject()
-                return
-            }
-
-            const url = URL.parse(tab.url)
-            if (url === null)
-                reject()
-            else
-                resolve(url)
-
-        }).catch(reject)
-    })
-}
-
 export async function getService(): Promise<Service> {
-    const url = await getTabUrl()
+    const product = await getProduct()
 
-    if (url.hostname === "totale.rosettastone.com") {
-        console.debug("Detected \"foundations\" product")
-        return new FoundationsService()
-    } else if (url.hostname === "learn.rosettastone.com") {
-        console.debug("Detected \"fluency builder\" product")
-        return new FluencyBuilderService()
+    console.debug(`Detected "${product}" product`)
+
+    switch(product) {
+        case Product.Foundations:
+            return new FoundationsService();
+        case Product.FluencyBuilder:
+            return new FluencyBuilderService();
     }
-
-    console.debug("Failed to detect any product")
-    throw new Error("Invalid product")
 }
 
 export class FluencyBuilderService implements Service {

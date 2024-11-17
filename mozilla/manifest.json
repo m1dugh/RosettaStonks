@@ -19,6 +19,7 @@
 	],
 	"icons": {
 		"48": "/static/rosettastonks-48.png",
+		"128": "/static/rosettastonks-512.png",
 		"512": "/static/rosettastonks-512.png"
 	},
     "browser_specific_settings": {
