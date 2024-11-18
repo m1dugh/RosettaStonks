@@ -87,7 +87,7 @@
               zip
             ];
 
-            buildTargets = ["mozilla"];
+            buildFlags = ["mozilla"];
 
             installPhase = ''
               runHook preInstall
@@ -108,18 +108,13 @@
               zip
             ];
 
-            buildTargets = ["chrome"];
+            buildFlags = ["chrome"];
 
             installPhase = ''
               runHook preInstall
               cp -R dist/ static/ manifest.json $out/
               runHook postInstall
             '';
-            postInstall = ''
-              substituteInPlace $out/dist/*.esm.js \
-                --replace "browser" "chrome"
-            '';
-
           };
         };
 
