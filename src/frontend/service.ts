@@ -49,18 +49,21 @@ export class FluencyBuilderService implements Service {
           throw Error("Could not add time")
 
       const body = JSON.parse(req.body)
-      for (const msg of body.variables.messages) {
-          msg.durationMs = time.getMilliseconds()
+      for (let i = 0; i < body.variables.messages.length; i++)
+      {
+          const msg = body.variables.messages[i]
+          msg.durationMs = time.getTime()
           msg.activityAttemptId = uuid.v1.generate()
           msg.activityStepAttemptId = uuid.v1.generate()
       }
       req.body = JSON.stringify(body)
 
-      return await fetch(req.url, {
+      console.debug("sending request", req)
+      await fetch(req.url, {
           method: req.method,
           headers: req.headers,
           body: req.body,
-      }).then(() => {})
+      })
     }
 
     validateLesson(): Promise<void> {

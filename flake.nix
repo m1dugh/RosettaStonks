@@ -78,7 +78,7 @@
         in {
           mozilla = buildDenoPackage {
             pname = "rosettastonks.xpi";
-            denoHash = "sha256-/aMoLC9ZlYTZI1FMvQvelHQP+GMhG3f2RjpZQ6tStiw=";
+            denoHash = "sha256-RK23SEW2uIfW9d4P+cYGI5nZ5o/1Nh5YJ6Ogkyiud/E=";
             src = ./.;
 
             nativeBuildInputs = with pkgs; [
