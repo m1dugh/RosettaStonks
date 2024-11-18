@@ -99,7 +99,7 @@
           chrome = buildDenoPackage {
 
             pname = "rosettastonks-chrome";
-            denoHash = "sha256-/aMoLC9ZlYTZI1FMvQvelHQP+GMhG3f2RjpZQ6tStiw=";
+            denoHash = "sha256-qPhzIYqoreMzLKNKKvUdGIPzPkied3qpZ9A6Di31OFE=";
             src = ./.;
 
             nativeBuildInputs = with pkgs; [
