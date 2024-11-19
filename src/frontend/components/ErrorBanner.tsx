@@ -1,35 +1,35 @@
-import React, {JSX, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 interface IProps {
     error: Error | null;
 }
 
-let timeout: number | undefined;
-
-export default function ErrorBanner({error}: IProps): JSX.Element {
-    const [showed, setShowed] = useState<boolean>(false)
+const ErrorBanner: React.FC<IProps> = ({ error }) => {
+    const [showed, setShowed] = useState<boolean>(false);
 
     useEffect(() => {
         if (error === null) {
-           setShowed(false) 
-           return
+            setShowed(false);
+            return;
         }
 
-        console.error(error.message)
+        console.error(error.message);
+        setShowed(true);
 
-        setShowed(true)
-        if (timeout !== undefined)
-            clearTimeout(timeout)
+        const timeout = setTimeout(() => {
+            setShowed(false);
+        }, 3000);
 
-        timeout = setTimeout(() => {
-            setShowed(false)
-        }, 3000)
+        return () => clearTimeout(timeout);
+    }, [error]);
 
-    }, [error])
+    const classes = ["error-banner", showed ? "active" : null].filter(Boolean).join(" ");
 
-    const classes = ["error-banner", showed ? "active" : null].filter(v => v != null).join(" ")
+    return (
+        <div className={classes} onClick={() => setShowed(false)}>
+            {error?.message}
+        </div>
+    );
+};
 
-    return (<div className={classes} onClick={() => setShowed(false)}>
-        {error?.message}
-    </div>)
-}
+export default ErrorBanner;
