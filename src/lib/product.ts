@@ -1,16 +1,17 @@
-
 export enum Product {
     Foundations = "foundations",
     FluencyBuilder = "fluency builder",
 }
 
 export function getProductFromUrl(url: URL): Product {
-    if (url.hostname === "totale.rosettastone.com")
-        return Product.Foundations
-    else if (url.hostname === "learn.rosettastone.com")
-        return Product.FluencyBuilder
-
-    throw new Error("Invalid site for product")
+    switch (url.hostname) {
+        case "totale.rosettastone.com":
+            return Product.Foundations;
+        case "learn.rosettastone.com":
+            return Product.FluencyBuilder;
+        default:
+            throw new Error("Invalid site for product");
+    }
 }
 
 export function getTabUrl(): Promise<URL> {
