@@ -38,7 +38,12 @@ export class FluencyBuilderService implements Service {
       if (feature === Feature.ValidateLesson) {
           return false
       } else if (feature === Feature.AddTime) {
-          return await getRequest(FluencyBuilderTimeRequestKey) !== undefined
+          const request = await getRequest(FluencyBuilderTimeRequestKey)
+          if (request?.body == undefined)
+              return false
+
+          // Check message is unskipped
+          return JSON.parse(request.body).variables.messages.every(({skip}: {skip: boolean}) => !skip)
       }
       return false
     }
