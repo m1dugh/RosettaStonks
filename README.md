@@ -1,9 +1,20 @@
 # Rosetta Stonks
 
-## How to use
+- [Install](#install)
+    - [Chrome](#chrome-based-browsers)
+    - [Firefox](#firefox-based-browsers)
+- [How to use](#how-to-use)
+    - [Adding time](#adding-time)
+        - [Foundations](#adding-time-in-foundations)
+        - [Fluency builder](#adding-time-in-fluency-builder)
+    - [Validating lesson](#validating-lesson)
+        - [Foundations](#validating-lesson-in-foundations)
+        - [Fluency builder](#validating-lesson-in-fluency-builder)
+
+
+## Install
 
 ### Chrome based browsers
-
 
 1. Using github release
 
@@ -53,6 +64,43 @@ $ nix build --out-link "" --print-out-paths github:m1dugh/RosettaStonks#mozilla
 *Warning: This method only installs the extension temporarily, meaning that if
 you close your browser, the addon will be uninstalled. This is due to firefox
 policies not allowing unverified extensions to be used.*
+
+## How to use
+
+### Adding time
+
+#### Adding time in Foundations
+
+To add time on `foundations` product, you need to go to your exercises, and
+click ignore or resolve one question at least. Once this is done, a time field
+should appear on the extension page on which you can add your time.
+
+#### Adding time in Fluency builder
+
+To add time on `fluency builder` product, you need to go to your exercises, and
+answer at least one exercise. If the add time field does not appear, it means
+that no time request was caught, you need to refresh the question and answer it
+once again.
+
+*Note: If you don't see the add time field, it means that the actions you took
+on Rosetta stone website did not lead to adding legitimate time, and therefore,
+you need to answer other questions.*
+
+### Validating lesson
+
+#### Validating lesson in Foundations
+
+To validate a lesson, one needs to start a lesson, and go through all of the
+questions through the `ignore` button on the bottom right. Once all the
+questions have been seen, clicking the `validate lesson` button should validate
+the lesson. If not, go back to your home page, click on the same lesson, it
+should ask you `Do you want to continue or reset ?`, you can choose both, and
+validate lesson again until it works. It should work after 3/4 times maximum.
+
+
+#### Validating lesson in Fluency builder
+
+Right now, the validate lesson feature is not available on rosetta stonks.
 
 
 ## Building the application
