@@ -80,7 +80,8 @@ should appear on the extension page on which you can add your time.
 To add time on `fluency builder` product, you need to go to your exercises, and
 answer at least one exercise. If the add time field does not appear, it means
 that no time request was caught, you need to refresh the question and answer it
-once again.
+once again. To have the time added, you need to finish the lesson you used to
+add time.
 
 *Note: If you don't see the add time field, it means that the actions you took
 on Rosetta stone website did not lead to adding legitimate time, and therefore,
