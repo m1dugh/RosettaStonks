@@ -1,5 +1,6 @@
 # Rosetta Stonks
 
+- [Introduction](#introduction)
 - [Install](#install)
     - [Chrome](#chrome-based-browsers)
     - [Firefox](#firefox-based-browsers)
@@ -11,6 +12,12 @@
         - [Foundations](#validating-lesson-in-foundations)
         - [Fluency builder](#validating-lesson-in-fluency-builder)
 
+## Introduction
+
+RosettaStonks is a browser extension that allows one to add time and validate
+lessons on rosetta stone learning language platform.
+
+> RosettaStonks, and your rosetta stone goes stonks.
 
 ## Install
 
