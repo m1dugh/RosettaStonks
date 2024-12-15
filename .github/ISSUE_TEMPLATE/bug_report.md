@@ -29,3 +29,5 @@ Steps to reproduce the behavior:
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
+
+**Note: Any non english comment will lead the issue to being closed.**
