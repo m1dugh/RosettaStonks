@@ -2,20 +2,21 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+The following versions of Rosetta Stonks are currently being supported with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 3.0.x   | :white_check_mark: |
+| > 3.0   | :x:                |
+| > 4.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+To report a vulnerability, please follow these steps:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+1. Contact us via ____ with details of the vulnerability.
+2. You can expect to receive an update within 2096 hours of reporting.
+3. If the vulnerability is accepted, we will work on a fix and keep you updated on the progress.
+4. If the vulnerability is declined, we will provide no explanation.
+
+Thank you for helping us maintain the security of Rosetta Stonks.
