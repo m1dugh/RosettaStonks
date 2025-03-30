@@ -38,12 +38,14 @@ $ tar xvzf /path/to/rosettastonks-chrome.tar.gz
 2. Using nix package manager
 
 Instead of the previous commands, if you are on a nix system **supporting
-flakes**, you can run the following commands, which will give your the path to
-the `rosettastonks` folder (named `rosettastonks-chrome`)
+flakes**, you can run the following commands, which will install a folder
+under the path `/tmp/rosettastonks` with all the files.
 
 ```bash
-$ nix build --out-link "" --print-out-paths github:m1dugh/RosettaStonks#chrome
+$ nix build --out-link "/tmp/rosettastonks" github:m1dugh/RosettaStonks#chrome
 ```
+
+The folder is now installed under `/tmp/rosettastonks/`
 
 **This part if for all users indepently of whether you are using github method
 or nix method.**
@@ -60,13 +62,12 @@ In your browser:
 - alternatively, if using nix package manager with flake support, your can run
   the following command.
 ```bash
-$ nix build --out-link "" --print-out-paths github:m1dugh/RosettaStonks#mozilla
+$ nix build --out-link "/tmp/rosettatonks.xpi" github:m1dugh/RosettaStonks#mozilla
 ```
 - go to `about:addons` in your browser
 - click the settings button and go to `Debug addons`.
 - click `Load Temporary Add-On`
-- select the `rosettastonks.xpi` file in the file picker, or the path the nix
-  command gave you.
+- select the `/tmp/rosettastonks.xpi` file in the file picker.
 
 *Warning: This method only installs the extension temporarily, meaning that if
 you close your browser, the addon will be uninstalled. This is due to firefox

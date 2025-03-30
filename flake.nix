@@ -9,18 +9,24 @@
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
     {
       nixpkgs,
       flake-utils,
+      treefmt-nix,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        treefmt-eval = treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+        };
         inherit (nixpkgs) lib;
       in
       {
@@ -32,94 +38,100 @@
           ];
         };
 
-        packages = 
-        let
-          buildDenoPackage = {
-            denoHash,
-            pname,
-            src,
-            ...
-          }@drv:
+        packages =
           let
-            deno-cache = builtins.derivation {
-              name = "deno-cache";
-              src = ./.;
-              inherit system;
-              builder = 
+            buildDenoPackage =
+              {
+                denoHash,
+                pname,
+                src,
+                ...
+              }@drv:
               let
-                builder = pkgs.writeShellScriptBin "builder" ''
-                ${pkgs.coreutils}/bin/mkdir -p $out/cache/
-                echo $src
-                bite
-                cd $src
-                DENO_DIR="$out/cache/" ${lib.getExe pkgs.deno} install
-                '';
-              in "${lib.getExe builder}";
+                deno-cache = builtins.derivation {
+                  name = "deno-cache";
+                  src = ./.;
+                  inherit system;
+                  builder =
+                    let
+                      builder = pkgs.writeShellScriptBin "builder" ''
+                        ${pkgs.coreutils}/bin/mkdir -p $out/cache/
+                        echo $src
+                        bite
+                        cd $src
+                        DENO_DIR="$out/cache/" ${lib.getExe pkgs.deno} install
+                      '';
+                    in
+                    "${lib.getExe builder}";
 
-              outputHashMode = "recursive";
-              outputHashAlgo = "sha256";
-              outputHash = denoHash;
+                  outputHashMode = "recursive";
+                  outputHashAlgo = "sha256";
+                  outputHash = denoHash;
+                };
+              in
+              pkgs.stdenv.mkDerivation (
+                {
+                  inherit src;
+                  name = pname;
+
+                  preBuild = ''
+                    mkdir -p $out/
+                    cp -R ${deno-cache}/cache/ $out/cache
+                    chmod -R +w $out/cache/
+                    export DENO_DIR="$out/cache/"
+                  '';
+
+                  postBuild = ''
+                    rm -rf $out/cache/
+                  '';
+                }
+                // drv
+              );
+          in
+          {
+            mozilla = buildDenoPackage {
+              pname = "rosettastonks.xpi";
+              denoHash = "sha256-RK23SEW2uIfW9d4P+cYGI5nZ5o/1Nh5YJ6Ogkyiud/E=";
+              src = ./.;
+
+              nativeBuildInputs = with pkgs; [
+                deno
+                gnumake
+                zip
+              ];
+
+              buildFlags = [ "mozilla" ];
+
+              installPhase = ''
+                runHook preInstall
+                cp rosettastonks.xpi $out
+                runHook postInstall
+              '';
+
             };
-          in pkgs.stdenv.mkDerivation ({
-            inherit src;
-            name = pname;
+            chrome = buildDenoPackage {
 
-            preBuild = ''
-              mkdir -p $out/
-              cp -R ${deno-cache}/cache/ $out/cache
-              chmod -R +w $out/cache/
-              export DENO_DIR="$out/cache/"
-            '';
+              pname = "rosettastonks-chrome";
+              denoHash = "sha256-qPhzIYqoreMzLKNKKvUdGIPzPkied3qpZ9A6Di31OFE=";
+              src = ./.;
 
-            postBuild = ''
-              rm -rf $out/cache/
-            '';
-          } // drv);
-        in {
-          mozilla = buildDenoPackage {
-            pname = "rosettastonks.xpi";
-            denoHash = "sha256-RK23SEW2uIfW9d4P+cYGI5nZ5o/1Nh5YJ6Ogkyiud/E=";
-            src = ./.;
+              nativeBuildInputs = with pkgs; [
+                deno
+                gnumake
+                zip
+              ];
 
-            nativeBuildInputs = with pkgs; [
-              deno
-              gnumake
-              zip
-            ];
+              buildFlags = [ "chrome" ];
 
-            buildFlags = ["mozilla"];
-
-            installPhase = ''
-              runHook preInstall
-              cp rosettastonks.xpi $out
-              runHook postInstall
-            '';
-
+              installPhase = ''
+                runHook preInstall
+                cp -R dist/ static/ manifest.json $out/
+                runHook postInstall
+              '';
+            };
           };
-          chrome = buildDenoPackage {
 
-            pname = "rosettastonks-chrome";
-            denoHash = "sha256-qPhzIYqoreMzLKNKKvUdGIPzPkied3qpZ9A6Di31OFE=";
-            src = ./.;
-
-            nativeBuildInputs = with pkgs; [
-              deno
-              gnumake
-              zip
-            ];
-
-            buildFlags = ["chrome"];
-
-            installPhase = ''
-              runHook preInstall
-              cp -R dist/ static/ manifest.json $out/
-              runHook postInstall
-            '';
-          };
-        };
-
-
-        formatter = pkgs.nixfmt-rfc-style;
+        formatter = treefmt-eval.config.build.wrapper;
       }
     );
 }

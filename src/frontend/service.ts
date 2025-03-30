@@ -19,15 +19,17 @@ async function getRequest(key: string): Promise<Request | undefined> {
     return req
 }
 
-async function sendRequest(req: any): Promise<void> {
+async function sendRequest(req: Request): Promise<void> {
       const tab = await getTab()
 
+      const reqStr = JSON.stringify(req)
       await browser.scripting.executeScript({
           target: {
               tabId: tab.id,
           },
-          args: [req],
-          func: async (req) => {
+          args: [reqStr],
+          func: async (reqStr: string) => {
+              const req = JSON.parse(reqStr)
               await fetch(req.url, {
                   method: req.method,
                   headers: req.headers,
@@ -181,6 +183,9 @@ export class FoundationsService implements Service {
                 method: "POST",
                 headers: req.headers,
                 body: bodyString,
+                timestamp: new Date(),
+                requestId: "-1",
+                tabId: -1,
             })
         }
 
