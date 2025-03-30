@@ -14,6 +14,21 @@ export function getProductFromUrl(url: URL): Product {
     }
 }
 
+export function getTab(): Promise<Tab> {
+    return new Promise((resolve, reject) => {
+        browser.tabs.query({
+            active: true,
+            currentWindow: true,
+        }).then(([tab]: {url: string | undefined}[]) => {
+            if (tab.url === undefined) {
+                reject()
+                return
+            }
+            resolve(tab)
+        }).catch(reject)
+    })
+}
+
 export function getTabUrl(): Promise<URL> {
     return new Promise((resolve, reject) => {
         browser.tabs.query({

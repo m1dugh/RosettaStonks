@@ -4,7 +4,6 @@ import TimeForm from "./components/TimeForm.tsx"
 import ValidateForm from "./components/ValidateForm.tsx"
 import { getService, Service } from "./service.ts";
 import ErrorBanner from "./components/ErrorBanner.tsx";
-import GitHubButton from "npm:react-github-btn"
 
 function App(): JSX.Element {
     const [service, setService] = useState<Service | null>(null)
@@ -28,18 +27,14 @@ function App(): JSX.Element {
         <div className="clear-cache">
             <button onClick={onClearCache}>clear cache</button>
         </div>
-        <div className="extra-bar">
-            <GitHubButton
-                href="https://github.com/m1dugh/RosettaStonks"
-                data-color-scheme="no-preference: dark; light: light; dark: dark;"
-                data-icon="octicon-star"
-                data-size="large"
-                data-show-count="true"
-                aria-label="Star m1dugh/RosettaStonks on GitHub" >
-                Star
-            </GitHubButton>
-            <GitHubButton href="https://github.com/m1dugh/RosettaStonks/issues" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue m1dugh/RosettaStonks on GitHub">Issue</GitHubButton>
-        </div>
+        <iframe
+            src="https://ghbtns.com/github-btn.html?user=m1dugh&repo=rosettatonks&type=star&count=true&size=large"
+            frameborder="0"
+            scrolling="0"
+            width="170"
+            height="30"
+            title="GitHub">
+        </iframe>
     </>)
 }
 

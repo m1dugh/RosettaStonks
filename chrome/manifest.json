@@ -15,7 +15,8 @@
 		"storage",
 		"webRequest",
 		"tabs",
-		"scripting"
+		"scripting",
+        "activeTab"
 	],
 	"icons": {
 		"48": "/static/rosettastonks-48.png",

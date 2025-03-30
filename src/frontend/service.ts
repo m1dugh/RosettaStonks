@@ -1,7 +1,7 @@
 import { FluencyBuilderTimeRequestKey, FoundationsCourseRequestKey, FoundationsTimeRequestKey } from "../lib/env.ts";
 import { copyRequest, Request } from "../lib/request.ts";
 import * as uuid from "jsr:@std/uuid"
-import { getProduct, getTabUrl, Product } from "../lib/product.ts";
+import { getProduct, getTab, Product } from "../lib/product.ts";
 
 export enum Feature {
     AddTime,
@@ -17,6 +17,24 @@ export interface Service {
 async function getRequest(key: string): Promise<Request | undefined> {
     const req: Request | undefined = (await browser.storage.session.get(key))[key]
     return req
+}
+
+async function sendRequest(req: any): Promise<void> {
+      const tab = await getTab()
+
+      await browser.scripting.executeScript({
+          target: {
+              tabId: tab.id,
+          },
+          args: [req],
+          func: async (req) => {
+              await fetch(req.url, {
+                  method: req.method,
+                  headers: req.headers,
+                  body: req.body,
+              })
+          }
+      })
 }
 
 export async function getService(): Promise<Service> {
@@ -57,18 +75,21 @@ export class FluencyBuilderService implements Service {
       for (let i = 0; i < body.variables.messages.length; i++)
       {
           const msg = body.variables.messages[i]
-          msg.durationMs = time.getTime()
+          msg.durationMs = Math.round(time.getTime() / body.variables.messages.length)
           msg.activityAttemptId = uuid.v1.generate()
           msg.activityStepAttemptId = uuid.v1.generate()
       }
       req.body = JSON.stringify(body)
 
+
       console.debug("sending request", req)
-      await fetch(req.url, {
-          method: req.method,
-          headers: req.headers,
-          body: req.body,
-      })
+
+      // needs to use this method, as the backend checks for the Origin
+      // header which cannot manually be set.
+      await sendRequest(req)
+
+      console.debug("successfully sent request")
+
     }
 
     validateLesson(): Promise<void> {
