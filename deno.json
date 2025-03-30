@@ -8,7 +8,7 @@
     "react-github-button": "npm:react-github-button@^0.1.11"
   },
   "tasks": {
-      "build:frontend": "deno run --allow-all scripts/package.ts frontend",
-      "build:worker": "deno run --allow-all scripts/package.ts worker"
+    "build:frontend": "deno run --allow-all scripts/package.ts frontend",
+    "build:worker": "deno run --allow-all scripts/package.ts worker"
   }
 }

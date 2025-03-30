@@ -2,7 +2,7 @@
 
 This project is a side-project that I do on my spare time and I might not keep
 on maintaining when I no longer have use of it. Henceforth, you are more than
-encouraged to participate in the project to make *your* rosetta stone go
+encouraged to participate in the project to make _your_ rosetta stone go
 stonks.
 
 ## Overview

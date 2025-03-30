@@ -1,7 +1,7 @@
-import { setupListeners } from "./request.ts"
+import { setupListeners } from "./request.ts";
 import { setupTabListeners } from "./tab.ts";
 
-setupListeners()
-setupTabListeners()
+setupListeners();
+setupTabListeners();
 
-console.info("Successfully started RosettaStonks")
+console.info("Successfully started RosettaStonks");

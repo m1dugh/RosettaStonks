@@ -1,9 +1,13 @@
-import React from "react"
+import React from "react";
 
 interface IProps {
-    message: string;
+  message: string;
 }
 
-export default function ({message}: IProps) {
-    return (<p className="warning-form">Do at least one exercise in order to {message}</p>)
+export default function ({ message }: IProps) {
+  return (
+    <p className="warning-form">
+      Do at least one exercise in order to {message}
+    </p>
+  );
 }

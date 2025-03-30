@@ -2,15 +2,15 @@
 
 - [Introduction](#introduction)
 - [Install](#install)
-    - [Chrome](#chrome-based-browsers)
-    - [Firefox](#firefox-based-browsers)
+  - [Chrome](#chrome-based-browsers)
+  - [Firefox](#firefox-based-browsers)
 - [How to use](#how-to-use)
-    - [Adding time](#adding-time)
-        - [Foundations](#adding-time-in-foundations)
-        - [Fluency builder](#adding-time-in-fluency-builder)
-    - [Validating lesson](#validating-lesson)
-        - [Foundations](#validating-lesson-in-foundations)
-        - [Fluency builder](#validating-lesson-in-fluency-builder)
+  - [Adding time](#adding-time)
+    - [Foundations](#adding-time-in-foundations)
+    - [Fluency builder](#adding-time-in-fluency-builder)
+  - [Validating lesson](#validating-lesson)
+    - [Foundations](#validating-lesson-in-foundations)
+    - [Fluency builder](#validating-lesson-in-fluency-builder)
 
 ## Introduction
 
@@ -26,11 +26,13 @@ lessons on rosetta stone learning language platform.
 1. Using github release
 
 To use the extension in a chrome-based browser, you need to:
+
 - download the file `rosettastonks-chrome.tar.gz` from the latest release on
   your machine.
 - create a folder named `rosettastonks` somewhere on your machine to store the
   extension
 - run the following command in the `rosettastonks` folder.
+
 ```bash
 $ tar xvzf /path/to/rosettastonks-chrome.tar.gz
 ```
@@ -51,6 +53,7 @@ The folder is now installed under `/tmp/rosettastonks/`
 or nix method.**
 
 In your browser:
+
 - go to `chrome://extensions`
 - check the `Developer mode` toggle
 - click `Load unpacked`
@@ -61,17 +64,19 @@ In your browser:
 - download the file `rosettastonks.xpi` from the latest release.
 - alternatively, if using nix package manager with flake support, your can run
   the following command.
+
 ```bash
 $ nix build --out-link "/tmp/rosettatonks.xpi" github:m1dugh/RosettaStonks#mozilla
 ```
+
 - go to `about:addons` in your browser
 - click the settings button and go to `Debug addons`.
 - click `Load Temporary Add-On`
 - select the `/tmp/rosettastonks.xpi` file in the file picker.
 
-*Warning: This method only installs the extension temporarily, meaning that if
+_Warning: This method only installs the extension temporarily, meaning that if
 you close your browser, the addon will be uninstalled. This is due to firefox
-policies not allowing unverified extensions to be used.*
+policies not allowing unverified extensions to be used._
 
 ## How to use
 
@@ -91,9 +96,9 @@ that no time request was caught, you need to refresh the question and answer it
 once again. To have the time added, you need to finish the lesson you used to
 add time.
 
-*Note: If you don't see the add time field, it means that the actions you took
+_Note: If you don't see the add time field, it means that the actions you took
 on Rosetta stone website did not lead to adding legitimate time, and therefore,
-you need to answer other questions.*
+you need to answer other questions._
 
 ### Validating lesson
 
@@ -106,17 +111,16 @@ the lesson. If not, go back to your home page, click on the same lesson, it
 should ask you `Do you want to continue or reset ?`, you can choose both, and
 validate lesson again until it works. It should work after 3/4 times maximum.
 
-
 #### Validating lesson in Fluency builder
 
 Right now, the validate lesson feature is not available on rosetta stonks.
-
 
 ## Building the application
 
 ### Building the worker
 
 The worker can be packaged using the following command
+
 ```
 $ deno task build:worker
 ```
@@ -127,6 +131,7 @@ file for the worker.
 ### Building the frontend
 
 The worker can be packaged using the following command
+
 ```
 $ deno task build:front
 ```
