@@ -60,12 +60,47 @@ export default function TimeForm({
           <button type="submit" disabled={time <= 0 || isSubmitting}>
             {content}
           </button>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-          {time <= 0 && <p className="error-message">Please enter a valid time.</p>}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
+          {time <= 0 && (
+            <p className="error-message">Please enter a valid time.</p>
+          )}
         </form>
       ) : (
         <MissingFeatureBanner message="Add Time feature is unavailable" />
       )}
+      <style jsx>{`
+        .success-message {
+          color: green;
+          font-weight: bold;
+        }
+        .error-message {
+          color: red;
+          font-weight: bold;
+        }
+        .time-form {
+          font-family: Arial, sans-serif;
+        }
+        input {
+          padding: 8px;
+          margin: 8px 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        button {
+          padding: 8px 16px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        button:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+      `}</style>
     </div>
   );
 }
