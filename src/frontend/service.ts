@@ -145,13 +145,13 @@ export class FoundationsService implements Service {
     const requests = this.getTimeRequests(req, time);
 
     console.debug("sending requests", requests);
-    const promises = requests.map((req) =>
+    const promises = requests.map((req) => 
       fetch(req.url, {
         method: req.method,
         headers: req.headers,
         body: req.body,
-      }),
-    );
+      })
+     );
 
     return await Promise.all(promises).then(() => {});
   }

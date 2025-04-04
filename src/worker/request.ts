@@ -31,6 +31,7 @@ interface BeforeSendHeaderRequest {
 
   // Headers for chrome
   headers: any | undefined;
+  tabId: number;
 }
 
 function storeRequest(key: string): (req: Request) => void {
@@ -157,4 +158,31 @@ export function setupListeners(): void {
   setupRequestListeners(FluencyBuilderRequestFilter, [
     fluencyBuilderTimeRequest,
   ]);
+
+  browser.webRequest.onBeforeSendHeaders.addListener(
+    async (details: BeforeSendHeaderRequest) => {
+        // only operate when request comes from tab
+        if (details.method !== "POST" || details.tabId !== -1)
+            return details
+
+        if (details.requestHeaders != null) {
+            // chrome logic
+            for (let i = 0; i < details.requestHeaders.length; ++i) {
+                if (details.requestHeaders[i].name === 'Origin') {
+                    details.requestHeaders.splice(i, 1);
+                    break;
+                }
+            }
+            details.requestHeaders.push({
+                name: "Origin",
+                value: "https://tracking.rosettastone.com/"
+            })
+            return {requestHeaders: details.requestHeaders}
+        } else {
+            // firefox logic
+        }
+    },
+    FoundationsRequestFilter,
+    ["requestHeaders", "blocking"],
+  );
 }
