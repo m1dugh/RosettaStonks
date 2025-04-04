@@ -133,7 +133,7 @@ file for the worker.
 The worker can be packaged using the following command
 
 ```
-$ deno task build:front
+$ deno task build:frontend
 ```
 
 Which creates the packaged file `/dist/frontend.esm.js` which is the packaged
