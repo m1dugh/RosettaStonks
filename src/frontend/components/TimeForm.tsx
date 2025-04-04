@@ -7,7 +7,7 @@ interface IProps {
   onError: (e: Error) => void;
 }
 
-const DefaultText = "add minutes";
+const DefaultText = "Add Minutes";
 
 export default function TimeForm({
   service,
@@ -16,6 +16,8 @@ export default function TimeForm({
   const [time, setTime] = useState<number>(0);
   const [content, setContent] = useState<string>(DefaultText);
   const [available, setAvailable] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     service?.isFeatureReady(Feature.AddTime).then(setAvailable);
@@ -28,14 +30,18 @@ export default function TimeForm({
       return;
     }
     console.info("Adding", time, "minutes");
-    setContent("...");
+    setContent("Processing...");
+    setIsSubmitting(true);
+    setSuccessMessage(null);
     try {
       await service.addTime(new Date(time * 60 * 1000));
       setTime(0);
+      setSuccessMessage("Time added successfully!");
     } catch (e) {
       onError(e as Error);
     } finally {
       setContent(DefaultText);
+      setIsSubmitting(false);
     }
   };
 
@@ -46,17 +52,19 @@ export default function TimeForm({
           <input
             type="number"
             min="0"
-            placeholder="time to add (minutes)"
-            onChange={(e) => setTime(e.target.value || 0)}
+            placeholder="Enter time to add (in minutes)"
+            onChange={(e) => setTime(Number(e.target.value) || 0)}
             value={time}
-            disabled={!available}
+            disabled={!available || isSubmitting}
           />
-          <button type="submit" disabled={time <= 0}>
+          <button type="submit" disabled={time <= 0 || isSubmitting}>
             {content}
           </button>
+          {successMessage && <p className="success-message">{successMessage}</p>}
+          {time <= 0 && <p className="error-message">Please enter a valid time.</p>}
         </form>
       ) : (
-        <MissingFeatureBanner message="add time" />
+        <MissingFeatureBanner message="Add Time feature is unavailable" />
       )}
     </div>
   );
