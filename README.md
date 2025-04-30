@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Install](#install)
   - [Chrome](#chrome-based-browsers)
+    - [Visual Guide](#chrome-based-browsers)
   - [Firefox](#firefox-based-browsers)
 - [How to use](#how-to-use)
   - [Adding time](#adding-time)
@@ -23,7 +24,9 @@ lessons on rosetta stone learning language platform.
 
 ### Chrome based browsers
 
-1. Using github release
+➡️ **New to installing Chrome extensions manually?** Check out the [Step-by-Step Visual Guide](INSTALL_GUI.md) — includes helpful screenshots! 🖼️
+
+#### 1. Using GitHub Release
 
 To use the extension in a chrome-based browser, you need to:
 
@@ -159,3 +162,4 @@ $ make firefox
 
 Which will produce `rosettastonks.xpi`, the file for the extension that can be
 loaded in firefox.
+📸 Prefer visuals? Check out the [Chrome Installation Guide with Images](INSTALL_GUI.md)
