@@ -162,4 +162,5 @@ $ make firefox
 
 Which will produce `rosettastonks.xpi`, the file for the extension that can be
 loaded in firefox.
+
 📸 Prefer visuals? Check out the [Chrome Installation Guide with Images](INSTALL_GUI.md)
