@@ -1,104 +1,125 @@
-import React, { useState, JSX, useEffect } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import { Feature, Service } from "../service.ts";
 import MissingFeatureBanner from "./MissingFeatureBanner.tsx";
 
-interface IProps {
-  service: Service | null;
-  onError: (e: Error) => void;
+interface TimeFormProps {
+  service: Service;
+  onError: (error: Error) => void;
 }
 
-const DefaultText = "Add Minutes";
-
-export default function TimeForm({
-  service,
-  onError,
-}: IProps): Promise<JSX.Element> {
-  const [time, setTime] = useState<number>(0);
-  const [content, setContent] = useState<string>(DefaultText);
+export default function TimeForm({ service, onError }: TimeFormProps): JSX.Element {
+  const [minutes, setMinutes] = useState<number>(0);
   const [available, setAvailable] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [touched, setTouched] = useState<boolean>(false);
 
+  // Check feature availability
   useEffect(() => {
-    service?.isFeatureReady(Feature.AddTime).then(setAvailable);
+    let mounted = true;
+    service
+      .isFeatureReady(Feature.AddTime)
+      .then((ready) => mounted && setAvailable(ready))
+      .catch(() => mounted && setAvailable(false));
+    return () => {
+      mounted = false;
+    };
   }, [service]);
 
-  const onSubmit: React.FormEventHandler = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (service === null) {
-      onError(new Error("Invalid service"));
+    setTouched(true);
+
+    if (minutes <= 0) {
       return;
     }
-    console.info("Adding", time, "minutes");
-    setContent("Processing...");
+
     setIsSubmitting(true);
     setSuccessMessage(null);
+
     try {
-      await service.addTime(new Date(time * 60 * 1000));
-      setTime(0);
+      // Convert minutes to milliseconds as Date argument if needed
+      await service.addTime(new Date(minutes * 60 * 1000));
+      setMinutes(0);
       setSuccessMessage("Time added successfully!");
-    } catch (e) {
-      onError(e as Error);
+      setTouched(false);
+    } catch (error) {
+      onError(error as Error);
     } finally {
-      setContent(DefaultText);
       setIsSubmitting(false);
     }
   };
 
+  const buttonLabel = isSubmitting ? "Processing..." : "Add Minutes";
+  const showError = touched && minutes <= 0;
+
+  if (!available) {
+    return <MissingFeatureBanner message="Add Time feature is unavailable" />;
+  }
+
   return (
     <div className="time-form">
-      {available ? (
-        <form onSubmit={onSubmit}>
-          <input
-            type="number"
-            min="0"
-            placeholder="Enter time to add (in minutes)"
-            onChange={(e) => setTime(Number(e.target.value) || 0)}
-            value={time}
-            disabled={!available || isSubmitting}
-          />
-          <button type="submit" disabled={time <= 0 || isSubmitting}>
-            {content}
-          </button>
-          {successMessage && (
-            <p className="success-message">{successMessage}</p>
-          )}
-          {time <= 0 && (
-            <p className="error-message">Please enter a valid time.</p>
-          )}
-        </form>
-      ) : (
-        <MissingFeatureBanner message="Add Time feature is unavailable" />
-      )}
+      <form onSubmit={handleSubmit} className="form">
+        <input
+          type="number"
+          min={0}
+          placeholder="Enter minutes"
+          value={minutes}
+          onChange={(e) => setMinutes(Number(e.target.value))}
+          onBlur={() => setTouched(true)}
+          disabled={isSubmitting}
+          className="input"
+        />
+        <button type="submit" disabled={isSubmitting} className="button">
+          {buttonLabel}
+        </button>
+        {successMessage && (
+          <p role="status" className="success-message">
+            {successMessage}
+          </p>
+        )}
+        {showError && (
+          <p role="alert" className="error-message">
+            Please enter a valid number of minutes.
+          </p>
+        )}
+      </form>
+
       <style jsx>{`
-        .success-message {
-          color: green;
-          font-weight: bold;
-        }
-        .error-message {
-          color: red;
-          font-weight: bold;
-        }
         .time-form {
           font-family: Arial, sans-serif;
+          max-width: 300px;
+          margin: auto;
         }
-        input {
+        .input {
+          width: 100%;
           padding: 8px;
-          margin: 8px 0;
+          margin-bottom: 8px;
           border: 1px solid #ccc;
           border-radius: 4px;
         }
-        button {
-          padding: 8px 16px;
+        .button {
+          width: 100%;
+          padding: 8px;
           background-color: #007bff;
-          color: white;
+          color: #fff;
           border: none;
           border-radius: 4px;
           cursor: pointer;
         }
-        button:disabled {
+        .button:disabled {
           background-color: #ccc;
           cursor: not-allowed;
+        }
+        .success-message {
+          color: green;
+          font-weight: bold;
+          margin-top: 8px;
+        }
+        .error-message {
+          color: red;
+          font-weight: bold;
+          margin-top: 8px;
         }
       `}</style>
     </div>
