@@ -1,7 +1,7 @@
 {
   "name": "RosettaStonks",
   "description": "Enhances your rosetta stone performances",
-  "version": "3.0.4",
+  "version": "3.0.6",
   "manifest_version": 3,
   "background": {
     "service_worker": "./dist/worker.esm.js"
