@@ -108,45 +108,61 @@ const fluencyBuilderTimeRequest: RequestFilter = {
   onMatched: storeRequest(FluencyBuilderTimeRequestKey),
 };
 
-function setupRequestListeners(
-  urlFilters: { urls: string[] },
-  filters: Array<RequestFilter>,
-): void {
-  const requestBuffers: Array<Request | null> = new Array(filters.length);
+export function setupListeners(): void {
+  setupRequestListeners(FoundationsRequestFilter, [
+    foundationsTimeRequest,
+    foundationsCourseRequest,
+  ]);
 
-  browser.webRequest.onBeforeRequest.addListener(
-    (details: BeforeSendRequestRequest) => {
-      for (let i = 0; i < filters.length; i++) {
-        const req = requestFromObject(details);
-        if (filters[i].filter(req)) requestBuffers[i] = req;
-      }
-    },
-    urlFilters,
-    BeforeSendRequestParams,
-  );
+  setupRequestListeners(FluencyBuilderRequestFilter, [
+    fluencyBuilderTimeRequest,
+  ]);
 
-  browser.webRequest.onBeforeSendHeaders.addListener(
-    async (details: BeforeSendHeaderRequest) => {
-      for (let i = 0; i < requestBuffers.length; i++) {
-        const req = requestBuffers[i];
-        if (req?.requestId !== details.requestId) continue;
-
-        if (details.requestHeaders !== undefined)
-          details.requestHeaders.forEach(
-            ({ name, value }) => (req.headers[name] = value),
+  if (typeof chrome !== "undefined" && chrome.declarativeNetRequest) {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [1],
+      addRules: [
+        {
+          id: 1,
+          priority: 1,
+          action: {
+            type: "modifyHeaders" as chrome.declarativeNetRequest.RuleActionType,
+            requestHeaders: [
+              {
+                header: "Origin",
+                operation:
+                  "set" as chrome.declarativeNetRequest.HeaderOperation,
+                value: "https://tracking.rosettastone.com/",
+              },
+            ],
+          },
+          condition: {
+            urlFilter: "https://tracking.rosettastone.com/*",
+            resourceTypes: [
+              "xmlhttprequest" as chrome.declarativeNetRequest.ResourceType,
+            ],
+          },
+        },
+      ],
+    });
+  } else {
+    browser.webRequest.onBeforeSendHeaders.addListener(
+      (details) => {
+        if (details.method === "POST" && details.requestHeaders) {
+          const headers = details.requestHeaders.filter(
+            (h) => h.name.toLowerCase() !== "origin",
           );
-        else if (details.headers !== undefined)
-          Object.entries(details.headers).forEach(
-            ([name, value]) => (req.headers[name] = value),
-          );
-
-        await filters[i].onMatched(req);
-        requestBuffers[i] = null;
-      }
-    },
-    urlFilters,
-    BeforeSendHeadersParams,
-  );
+          headers.push({
+            name: "Origin",
+            value: "https://tracking.rosettastone.com/",
+          });
+          return { requestHeaders: headers };
+        }
+      },
+      FoundationsRequestFilter,
+      ["blocking", "requestHeaders"],
+    );
+  }
 }
 
 export function setupListeners(): void {
@@ -161,26 +177,25 @@ export function setupListeners(): void {
 
   browser.webRequest.onBeforeSendHeaders.addListener(
     async (details: BeforeSendHeaderRequest) => {
-        // only operate when request comes from tab
-        if (details.method !== "POST" || details.tabId !== -1)
-            return details
+      // only operate when request comes from tab
+      if (details.method !== "POST" || details.tabId !== -1) return details;
 
-        if (details.requestHeaders != null) {
-            // chrome logic
-            for (let i = 0; i < details.requestHeaders.length; ++i) {
-                if (details.requestHeaders[i].name === 'Origin') {
-                    details.requestHeaders.splice(i, 1);
-                    break;
-                }
-            }
-            details.requestHeaders.push({
-                name: "Origin",
-                value: "https://tracking.rosettastone.com/"
-            })
-            return {requestHeaders: details.requestHeaders}
-        } else {
-            // firefox logic
+      if (details.requestHeaders != null) {
+        // chrome logic
+        for (let i = 0; i < details.requestHeaders.length; ++i) {
+          if (details.requestHeaders[i].name === "Origin") {
+            details.requestHeaders.splice(i, 1);
+            break;
+          }
         }
+        details.requestHeaders.push({
+          name: "Origin",
+          value: "https://tracking.rosettastone.com/",
+        });
+        return { requestHeaders: details.requestHeaders };
+      } else {
+        // firefox logic
+      }
     },
     FoundationsRequestFilter,
     ["requestHeaders", "blocking"],
