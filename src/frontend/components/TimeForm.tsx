@@ -7,7 +7,10 @@ interface TimeFormProps {
   onError: (error: Error) => void;
 }
 
-export default function TimeForm({ service, onError }: TimeFormProps): JSX.Element {
+export default function TimeForm({
+  service,
+  onError,
+}: TimeFormProps): JSX.Element {
   const [minutes, setMinutes] = useState<number>(0);
   const [available, setAvailable] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -16,6 +19,7 @@ export default function TimeForm({ service, onError }: TimeFormProps): JSX.Eleme
 
   // Check feature availability
   useEffect(() => {
+    if (!service) return;
     let mounted = true;
     service
       .isFeatureReady(Feature.AddTime)

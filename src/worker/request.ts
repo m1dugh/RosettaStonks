@@ -159,30 +159,54 @@ export function setupListeners(): void {
     fluencyBuilderTimeRequest,
   ]);
 
-  browser.webRequest.onBeforeSendHeaders.addListener(
-    async (details: BeforeSendHeaderRequest) => {
-        // only operate when request comes from tab
-        if (details.method !== "POST" || details.tabId !== -1)
-            return details
+  const globalObj = typeof chrome !== "undefined" ? chrome : browser;
+
+  if (globalObj.declarativeNetRequest) {
+    globalObj.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [1],
+      addRules: [
+        {
+          id: 1,
+          priority: 1,
+          action: {
+            type: "modifyHeaders" as any,
+            requestHeaders: [
+              {
+                header: "Origin",
+                operation: "set" as any,
+                value: "https://tracking.rosettastone.com/",
+              },
+            ],
+          },
+          condition: {
+            urlFilter: "https://tracking.rosettastone.com/*",
+            resourceTypes: ["xmlhttprequest" as any],
+          },
+        },
+      ],
+    });
+  } else {
+    browser.webRequest.onBeforeSendHeaders.addListener(
+      async (details: BeforeSendHeaderRequest) => {
+        if (details.method !== "POST" || details.tabId === -1) return details;
 
         if (details.requestHeaders != null) {
-            // chrome logic
-            for (let i = 0; i < details.requestHeaders.length; ++i) {
-                if (details.requestHeaders[i].name === 'Origin') {
-                    details.requestHeaders.splice(i, 1);
-                    break;
-                }
+          for (let i = 0; i < details.requestHeaders.length; ++i) {
+            if (details.requestHeaders[i].name === "Origin") {
+              details.requestHeaders.splice(i, 1);
+              break;
             }
-            details.requestHeaders.push({
-                name: "Origin",
-                value: "https://tracking.rosettastone.com/"
-            })
-            return {requestHeaders: details.requestHeaders}
-        } else {
-            // firefox logic
+          }
+          details.requestHeaders.push({
+            name: "Origin",
+            value: "https://tracking.rosettastone.com/",
+          });
+          return { requestHeaders: details.requestHeaders };
         }
-    },
-    FoundationsRequestFilter,
-    ["requestHeaders", "blocking"],
-  );
+        return details;
+      },
+      FoundationsRequestFilter,
+      ["requestHeaders", "blocking"],
+    );
+  }
 }

@@ -1,25 +1,36 @@
 {
-  "name": "RosettaStonks",
-  "description": "Enhances your rosetta stone performances",
-  "version": "3.0.6",
-  "manifest_version": 3,
-  "background": {
-    "service_worker": "./dist/worker.esm.js"
-  },
-  "action": {
-    "default_popup": "/static/index.html",
-    "default_icon": "/static/rosettastonks-48.png",
-    "default_title": "rosetta stonks"
-  },
-  "permissions": ["storage", "webRequest", "webRequestBlocking", "tabs", "scripting", "activeTab"],
-  "icons": {
-    "48": "/static/rosettastonks-48.png",
-    "512": "/static/rosettastonks-512.png"
-  },
-  "host_permissions": [
-    "*://totale.rosettastone.com/",
-    "*://tracking.rosettastone.com/",
-    "*://learn.rosettastone.com/",
-    "*://gaia-server.rosettastone.com/"
-  ]
+    "name": "RosettaStonks",
+    "description": "Enhances your rosetta stone performances",
+    "version": "3.0.6",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "./dist/worker.esm.js"
+    },
+    "action": {
+        "default_popup": "/static/index.html",
+        "default_icon": "/static/rosettastonks-48.png",
+        "default_title": "rosetta stonks"
+    },
+    "permissions": [
+        "storage",
+        "webRequest",
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback",
+        "tabs",
+        "scripting",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "*://totale.rosettastone.com/*",
+        "*://tracking.rosettastone.com/*",
+        "*://learn.rosettastone.com/*",
+        "*://gaia-server.rosettastone.com/*"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    },
+    "icons": {
+        "48": "/static/rosettastonks-48.png",
+        "512": "/static/rosettastonks-512.png"
+    }
 }
