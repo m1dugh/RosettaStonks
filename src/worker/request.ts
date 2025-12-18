@@ -169,18 +169,18 @@ export function setupListeners(): void {
           id: 1,
           priority: 1,
           action: {
-            type: "modifyHeaders",
+            type: "modifyHeaders" as any,
             requestHeaders: [
               {
                 header: "Origin",
-                operation: "set",
+                operation: "set" as any,
                 value: "https://tracking.rosettastone.com/",
               },
             ],
           },
           condition: {
             urlFilter: "https://tracking.rosettastone.com/*",
-            resourceTypes: ["xmlhttprequest"],
+            resourceTypes: ["xmlhttprequest" as any],
           },
         },
       ],
