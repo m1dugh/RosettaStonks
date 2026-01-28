@@ -23,8 +23,12 @@ function App(): JSX.Element {
         <h1>Rosetta stonks</h1>
       </div>
       <ErrorBanner error={error} />
-      <TimeForm service={service} onError={setError} />
-      <ValidateForm service={service} onError={setError} />
+        {service && (
+        <>
+          <TimeForm service={service} onError={setError} />
+          <ValidateForm service={service} onError={setError} />
+        </>
+      )}
       <div className="clear-cache">
         <button onClick={onClearCache}>clear cache</button>
       </div>

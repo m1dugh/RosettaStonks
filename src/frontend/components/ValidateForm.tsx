@@ -16,6 +16,7 @@ export default function ValidateForm({
   const [content, setContent] = useState<string>("validate lesson");
 
   useEffect(() => {
+    if (!service) return;
     service?.isFeatureReady(Feature.ValidateLesson).then(setAvailable);
   }, [service]);
 
