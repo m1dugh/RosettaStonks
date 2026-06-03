@@ -159,10 +159,8 @@ export function setupListeners(): void {
     fluencyBuilderTimeRequest,
   ]);
 
-  const globalObj = typeof chrome !== "undefined" ? chrome : browser;
-
-  if (globalObj.declarativeNetRequest) {
-    globalObj.declarativeNetRequest.updateDynamicRules({
+  if (typeof browser === "undefined") {
+    chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [1],
       addRules: [
         {
@@ -186,9 +184,10 @@ export function setupListeners(): void {
       ],
     });
   } else {
+    // Firefox: use blocking webRequest to modify Origin only for extension popup requests (tabId === -1)
     browser.webRequest.onBeforeSendHeaders.addListener(
       async (details: BeforeSendHeaderRequest) => {
-        if (details.method !== "POST" || details.tabId === -1) return details;
+        if (details.method !== "POST" || details.tabId !== -1) return details;
 
         if (details.requestHeaders != null) {
           for (let i = 0; i < details.requestHeaders.length; ++i) {

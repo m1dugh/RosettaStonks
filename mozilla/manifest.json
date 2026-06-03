@@ -11,7 +11,7 @@
     "default_icon": "/static/rosettastonks-48.png",
     "default_title": "rosetta stonks"
   },
-  "permissions": ["storage", "webRequest", "tabs", "scripting", "activeTab"],
+  "permissions": ["storage", "webRequest", "webRequestBlocking", "tabs", "scripting", "activeTab"],
   "icons": {
     "48": "/static/rosettastonks-48.png",
     "512": "/static/rosettastonks-512.png"
