@@ -159,7 +159,7 @@ export function setupListeners(): void {
     fluencyBuilderTimeRequest,
   ]);
 
-  if (typeof browser === "undefined") {
+  if (navigator.userAgent.indexOf("Firefox") === -1) {
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [1],
       addRules: [
@@ -179,6 +179,10 @@ export function setupListeners(): void {
           condition: {
             urlFilter: "https://tracking.rosettastone.com/*",
             resourceTypes: ["xmlhttprequest" as any],
+            excludedInitiatorDomains: [
+              "totale.rosettastone.com",
+              "learn.rosettastone.com",
+            ] as any,
           },
         },
       ],
