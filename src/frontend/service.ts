@@ -4,7 +4,6 @@ import {
   FoundationsTimeRequestKey,
 } from "../lib/env.ts";
 import { copyRequest, Request } from "../lib/request.ts";
-import * as uuid from "jsr:@std/uuid";
 import { getProduct, getTab, Product } from "../lib/product.ts";
 
 export enum Feature {
@@ -85,8 +84,8 @@ export class FluencyBuilderService implements Service {
       msg.durationMs = Math.round(
         time.getTime() / body.variables.messages.length,
       );
-      msg.activityAttemptId = uuid.v1.generate();
-      msg.activityStepAttemptId = uuid.v1.generate();
+      msg.activityAttemptId = crypto.randomUUID();
+      msg.activityStepAttemptId = crypto.randomUUID();
     }
     req.body = JSON.stringify(body);
 

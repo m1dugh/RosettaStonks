@@ -88,44 +88,6 @@ export default function TimeForm({
           </p>
         )}
       </form>
-
-      <style jsx>{`
-        .time-form {
-          font-family: Arial, sans-serif;
-          max-width: 300px;
-          margin: auto;
-        }
-        .input {
-          width: 100%;
-          padding: 8px;
-          margin-bottom: 8px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-        .button {
-          width: 100%;
-          padding: 8px;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        .button:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
-        .success-message {
-          color: green;
-          font-weight: bold;
-          margin-top: 8px;
-        }
-        .error-message {
-          color: red;
-          font-weight: bold;
-          margin-top: 8px;
-        }
-      `}</style>
     </div>
   );
 }

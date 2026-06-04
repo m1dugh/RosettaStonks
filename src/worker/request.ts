@@ -159,10 +159,8 @@ export function setupListeners(): void {
     fluencyBuilderTimeRequest,
   ]);
 
-  const globalObj = typeof chrome !== "undefined" ? chrome : browser;
-
-  if (globalObj.declarativeNetRequest) {
-    globalObj.declarativeNetRequest.updateDynamicRules({
+  if (navigator.userAgent.indexOf("Firefox") === -1) {
+    chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [1],
       addRules: [
         {
@@ -181,6 +179,10 @@ export function setupListeners(): void {
           condition: {
             urlFilter: "https://tracking.rosettastone.com/*",
             resourceTypes: ["xmlhttprequest" as any],
+            excludedInitiatorDomains: [
+              "totale.rosettastone.com",
+              "learn.rosettastone.com",
+            ] as any,
           },
         },
       ],
@@ -188,7 +190,7 @@ export function setupListeners(): void {
   } else {
     browser.webRequest.onBeforeSendHeaders.addListener(
       async (details: BeforeSendHeaderRequest) => {
-        if (details.method !== "POST" || details.tabId === -1) return details;
+        if (details.method !== "POST" || details.tabId !== -1) return details;
 
         if (details.requestHeaders != null) {
           for (let i = 0; i < details.requestHeaders.length; ++i) {
