@@ -1,7 +1,7 @@
 {
   "name": "RosettaStonks",
   "description": "Enhances your rosetta stone performances",
-  "version": "3.0.7",
+  "version": "3.1.0",
   "manifest_version": 3,
   "background": {
     "scripts": ["./dist/worker.esm.js"]
@@ -19,7 +19,11 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "rosettastonks@midugh.fr",
-      "strict_min_version": "109.0"
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"],
+        "optional": []
+      }
     }
   },
   "host_permissions": [
