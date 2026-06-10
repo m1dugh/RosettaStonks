@@ -42,14 +42,36 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Install dependencies
         run: |
           sudo apt update -y
           sudo apt install -y zip build-essential
+          npm install -g web-ext addons-linter
 
       - name: Build
         run: |
           make mozilla
+
+      - name: Lint XPI
+        run: addons-linter rosettastonks.xpi
+
+      - name: Sign XPI
+        run: |
+          mkdir -p ./xpi-extracted
+          unzip -o rosettastonks.xpi -d ./xpi-extracted
+          web-ext sign \
+            --source-dir ./xpi-extracted \
+            --artifacts-dir ./signed \
+            --api-key "$AMO_JWT_ISSUER" \
+            --api-secret "$AMO_JWT_SECRET" \
+            --channel unlisted
+          cp signed/*.xpi rosettastonks.xpi
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
       - name: Save xpi file
         uses: actions/upload-artifact@v4
